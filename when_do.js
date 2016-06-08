@@ -29,66 +29,25 @@ logic.when(data, function(){},
 
 logic.when(object, logic.lessthan({humidity:3})*/
 
-function logic(){
-	this.type = 'logic';
+var handle_count = 0
 
+var logic = {
+	type : 'logic',
+    conditions : [ ],
+    
+    when: function(data, evaluator){
+    	this.type = 'when';
+        return new execute(data,evaluator)
+    }
 };
 
-logic.conditions = [ ];
-handle_count = 0
 
-logic.when = function(data, evaluator){
-	this.type = 'when';
-	return new execute(data,evaluator)
-};
 
 function execute(data, evaluator){
 	this.data = data;
 	this.evaluator = evaluator;
 	this.type = 'do';
 };
-
-
-// have function call setinterval and the eval of the data
-// check stoppage conditions
-/*
-	options = { 
-		rate = 1000 // how fast to evaluate in ms
-		eval_limit = 3 // limit of number of times to call the eval_func
-		action_limit = 10 // limit 
-	}
-	
-*/
-function start_condition(condition){
-	handle_count++;
-	
-	var times_eval_called = 0;
-	var times_action_called = 0;
-	
-	var the_handle = setInterval(function(){
-		console.log("action limit "+condition.action_limit)
-		console.log("eval limit "+condition.eval_limit)
-		console.log("times eval called"+times_eval_called)
-		console.log("times action called "+times_action_called)
-		if (times_eval_called < condition.eval_limit-1 && times_action_called < condition.action_limit-1 ){
-			times_eval_called++;
-			
-			if (condition.evaluator(condition.data)){
-				times_action_called++;
-				condition.action(condition.data)
-			}
-		}else{
-			clearInterval(the_handle)
-		}	
-	},condition.rate);
-	
-	condition.state = 'active';
-	condition.interval_handle = the_handle;	
-	logic.conditions.push(condition);
-	return the_handle;
-};
-
-
 execute.prototype.do = function(action,options){
 	var that = this
 	
@@ -119,19 +78,46 @@ execute.prototype.do = function(action,options){
 		state: undefined
 	};
 
-	
-
-	start_condition(condition)
-	
+	start_condition(condition);
 	return new handle(condition.handle_id);
 };
+
+
+function start_condition(condition){
+	handle_count++;
+	
+	var times_eval_called = 0;
+	var times_action_called = 0;
+	
+	var the_handle = setInterval(function(){
+
+		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
+			times_eval_called++;
+			
+			if (condition.evaluator(condition.data)){
+				times_action_called++;
+				condition.action(condition.data);
+			}
+		}else{
+			clearInterval(the_handle);
+            logic.remove_condition(condition.handle_id);
+		}	
+	},condition.rate);
+	
+	condition.state = 'active';
+	condition.interval_handle = the_handle;	
+	logic.conditions.push(condition);
+	return the_handle;
+};
+
+
 
 logic.remove_condition = function (id){
 	console.log('removing '+id)
 	var conditions_to_remove = this.conditions.filter(condition => condition.handle_id === id);
 	
 	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle))
-	conditions.to_remove.forEach(condition=> condition.state = 'stopped');
+	conditions_to_remove.forEach(condition=> condition.state = 'stopped');
 	
 	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id)
 	
@@ -155,11 +141,12 @@ logic.pause_condition = function(id){
 };
 
 logic.get_state = function(id){
-	var conditions = logic.conditions.filter(condition=> condition.handle_id == id).map(condition => return condition.state);
-	if (conditions.length > 1){
-		console.log('warning length is larger than one');
+	var conditions = logic.conditions.filter(condition=> condition.handle_id == id).map(condition => condition.state);
+    
+    if (conditions.length > 1){
+		throw (new Error("logical error, you probably mutated the private state, don't do that"));
 	}
-	return conditions[0];
+	return conditions.length == 1? conditions[0]: null;
 };
 
 
@@ -175,9 +162,9 @@ handle.prototype.resume = function(){
 handle.prototype.pause = function(){
 	logic.pause_condition(this.id)
 };
-
-// IF NOT IN LIST WE SAY STOPPED
 handle.prototype.get_state = function(){
-	return logic.get_state(this.id);
-}
+    var state = get_state(this.id);
+    return state == null? 'stopped': state;
+};
 
+module.exports = logic;
