@@ -7,7 +7,7 @@ describe('logic - basic evaluation tests', function(){
     it ('calls the function if it evaluates to true',function(done){
         
         var value = { val: false };
-        logic.when({}, ()=> true).do(()=> { value.val = true});
+        logic.when({}, ()=> true).do(()=> { value.val = true},{rate: 10});
         
         var promise = get_value_is_true_checker_promise(value);
         
@@ -19,12 +19,13 @@ describe('logic - basic evaluation tests', function(){
             { 
                 assert.fail('pass','fail','value.val was false, should have been set to true')
                 done();
-            });
+            }
+        );
     });
   
     it ('does not call the function if it evaluates to false', function(done){
         var value = { val: false };
-        logic.when({},()=> false).do(()=> { value.val = true});
+        logic.when({},()=> false).do(()=> { value.val = true},{rate: 10});
 
         var promise = get_value_is_true_checker_promise(value);
 
@@ -39,7 +40,51 @@ describe('logic - basic evaluation tests', function(){
         
     });
 
-    
+    it ('passes in the reference to the data to the condition', function(done){
+        var value = { val: false };
+        var condition = { count: 0 };
+        logic.when(condition, (condition)=> {
+            var is_true = condition.count == 2;
+            condition.count++;
+            return is_true;
+        }).do(()=> value.val = true,{rate: 10});
+        
+        var promise = get_value_is_true_checker_promise(value);
+        
+        // pass condition
+        promise.then(()=> done());
+        
+        // fail condition
+        promise.catch((reason)=> 
+            { 
+                assert.fail('pass','fail','value.val was false, should have been set to true')
+                done();
+            }
+        );
+    });
+
+
+    it ('passes in the reference to the data to the callback', function(done){
+
+        var value = { val: false, count: 0 };
+        logic.when(value, ()=> true).do((the_value)=> { the_value.count = 1; the_value.val = true},{rate: 10});
+        
+        var promise = get_value_is_true_checker_promise(value);
+        
+        // pass condition
+        promise.then(()=> {
+            assert.equal(value.count,1);
+            done()
+        });
+        
+        // fail condition
+        promise.catch((reason)=> 
+            { 
+                assert.fail('pass','fail','value.val was false, should have been set to true')
+                done();
+            }
+        );
+    });
 });
 
 // returns a promise that checks value.val ever 100 ms for a maximum of 15 tries 
@@ -49,14 +94,16 @@ function get_value_is_true_checker_promise (value){
             var tries = 0;
             var handle = setInterval(()=>{
                 if (value.val == true){
+                    clearInterval(handle);
                     resolve(value.val);
                 }else{
                     tries++;
                 }
-                if (tries == 10){   // 1.5 seconds maximum
+                if (tries == 5){   // 1.5 seconds maximum
+                    clearInterval(handle);
                     reject('callback was never calle');
                 }     
-            },100);
+            },10);
     });
     return the_promise;
 }
