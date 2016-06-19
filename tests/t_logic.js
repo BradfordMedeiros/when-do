@@ -87,6 +87,24 @@ describe('logic - basic evaluation tests', function(){
     });
 });
 
+describe ('logic - optional parameters', function(){
+    it ('optional limit of the number of times to evaluate the condition');
+    it ('optional limit for the number of times to call the action');
+    it ('has a function shortcut to call the rate limit with value of once which takes precedence over the options');
+    it ('optional specifier for the rate to evaluate conditions');
+    
+});
+
+describe ('handle interfaces', function(){
+    it ('can pause');
+    it ('can pause and then be resumed');
+    it ('can be stopped');
+    it ('pause state after being paused');
+    it ('active state after being resumed');
+    it ('stopped state after being stopped');
+    it ('cannot be resumed after being stopped');
+});
+
 // returns a promise that checks value.val ever 100 ms for a maximum of 15 tries 
 function get_value_is_true_checker_promise (value){
 
