@@ -8,12 +8,13 @@ var logic = {
     conditions : [ ],
     
     when: function(data, evaluator){
+        if (typeof (evaluator) !== typeof(function(){})){
+            throw (new Error('evalutor must be defined as a function'));
+        }
     	this.type = 'when';
         return new execute(data,evaluator)
     }
 };
-
-
 
 function execute(data, evaluator){
 	this.data = data;
@@ -47,13 +48,13 @@ execute.prototype.do = function(action,options){
 		action_limit: action_limit,
 		eval_limit : eval_limit,
 		rate: rate, 
-		state: undefined
+		state: undefined,
+        value: undefined
 	};
 
 	start_condition(condition);
 	return new handle(logic, condition.handle_id);
 };
-
 
 function start_condition(condition){
 	
@@ -67,7 +68,9 @@ function start_condition(condition){
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
 			
-			if (condition.evaluator(condition.data)){
+            var condition_eval = condition.evaluator(condition.data)
+            condition.value = condition_eval;
+			if (condition_eval){
 				times_action_called++;
 				condition.action(condition.data);
 			}
@@ -82,7 +85,6 @@ function start_condition(condition){
 	logic.conditions.push(condition);
 	return the_handle;
 };
-
 
 
 logic.remove_condition = function (id){
@@ -121,8 +123,6 @@ logic.get_state = function(id){
 	}
 	return conditions.length == 1? conditions[0]: null;
 };
-
-
 
 
 module.exports = logic;
