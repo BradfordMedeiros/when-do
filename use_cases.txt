@@ -1,0 +1,32 @@
+
+
+logic.when(light_is_off).then(light_is_on).do_once(action)
+or
+logic.when_becomes(light_is_on).do_once(action)  --> means when eval goes from false to true, then unregister handler
+or the reverse...
+logic.when_stops(light_is_on).do(action) --> means when eval goes from true to false
+
+logic.when(has_midi_note).do(play_midi_note_physical, { rate: 50} )     
+
+logic.when(is_it_hot).(spray_coolant, {rate: 10000} )
+
+logic.when( logic.or(it_is_night, it_is_dark)).do(turn_on_lights)
+
+i think the proper way is to have the updates on a rate option, default to 1 second evaluations
+and tie these to observable variables, whenever the values change we should check our compound expressions and then perform actions
+
+for example:
+
+logic.when(logic.and(x,y)).do(y) 
+--> x,y is tied to a state and starts
+rate is unspecified so we evaluate every 1000 seconds
+on the clock we call all the eval functions
+init: x = undefined, y = undefined
+on_the_first_clock: 
+                    x = false, y = false     --> we check and since y is false, the expression is false
+2nd:                x = true, y = false --
+                were any set?  --> then we evaluate the expression , evals to false
+3rd:            x  = false, y= true --> then we evalute the expression , evals to false
+
+so basically we evaluate all things that belong to the function on the clock,
+and evaluate expression after it.

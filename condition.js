@@ -4,7 +4,7 @@
 
 
 var condition = function(get_value){
-    this.eval = ()=> get_value();
+    this.eval = get_value;
 };
 condition.prototype.type = 'condition';
 

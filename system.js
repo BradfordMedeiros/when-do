@@ -1,7 +1,7 @@
 
 var child_process = require("child_process");
 var path = require("path");
-
+var fse = require("fs-extra");
 
 var action = function (the_path){
 	
@@ -30,7 +30,9 @@ var state = function (the_path){
 	// returns a promise
 	this.get_state = function(){	
 		var promise = new Promise(function(resolve,reject){
-			child_process.execFile(self.path,(err,stdout,stderr)=>{
+			child_process.execFile(self.path,
+            {cwd:self.path+'/..'},
+            (err,stdout,stderr)=>{
 				console.log('stdout:  '+stdout);
 				console.log('error:  ('+err+")");
 				console.log('$'+typeof(err));
@@ -68,7 +70,6 @@ var system = function(actions, state,conditions){
 	
 };
 
-/// condition
 /* 
 {
 	data: [temp, humidity] --> each assumes this topics exist
@@ -114,10 +115,20 @@ var load_conditions_path = function(sys_condition_folder){
 	return conditions;
 };
 
+
+function is_state(state_path){
+    throw (new Error('not implemented'));
+}
+
 var load_states_path = function(sys_condition_folder){
 	throw (new Error("not yet implemented"));
 	var states = [ ];
-	
+	fse.walk(sys_condition_folder).on('data',(x)=>{
+        //basically say if matches
+        is_state(x);
+    }).on('end',(x)=>{
+        
+    });
 	return states;
 }
 
@@ -127,9 +138,10 @@ var load_actions_path = function(sys_condition_folder){
 	return actions;
 };
 
-
+var t = new state('./mock/states/test.state.bat');
 module.exports = {
 	action: action,
-	state: state
+	state: state,
+    t: t
 	
 };
