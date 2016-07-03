@@ -17,6 +17,9 @@ var action = function (the_path){
 	};
 };
 
+action.is_action = function(action_path){
+    throw (new Error('not implemented'));
+};
 
 // figure out best way to handle this
 // state should be valid json (so then we can do easy number comparisons)
@@ -49,6 +52,19 @@ var state = function (the_path){
 	};
 };
 
+state.is_state = function(state_path){
+    var the_file = path.basename(state_path);
+    var state = the_file.split('.');
+    
+    return (
+        (the_file[0] !== '.') && 
+        (the_file[the_file.length-1] !== '.') && 
+        state[state.length-2] === 'state' && 
+        state.length-2 >0
+        );
+};
+
+
 var condition = function(path){
 	
 	var self = this;
@@ -56,39 +72,21 @@ var condition = function(path){
 	
 };
 
-// returns condition based upon the json
-function convert_json_to_condition(json_condition){
-	
-	
-}
-
-var system = function(actions, state,conditions){
-	
-	this.actions = actions;    // path of various actions available
-	this.state = state;
-	this.conditions = conditions; // path of various conditions available
-	
+condition.is_condition = function(condition_path){
+    throw (new Error('not implemented'));
 };
 
-/* 
-{
-	data: [temp, humidity] --> each assumes this topics exist
-	
-	
-	eval: 
-		(temp,humdity)=> {
-			temp > hum
-	
-	options: {
-		rate:  x,
-		action_limit: y
-		etc
-	}
-	
-	
+// returns condition based upon the json
+function convert_json_to_condition(json_condition){
+	throw (new Error('not implemented'));
 }
-*/
-//////////
+
+var system = function(actions,states,conditions){
+	
+	this.actions = actions;    // path of various actions available
+	this.states = states;
+	this.conditions = conditions; // path of various conditions available
+};
 
 
 // generates a system based upon the path to the root folder
@@ -96,14 +94,21 @@ var system = function(actions, state,conditions){
 // need to do a recursive walk of the file system
 // make it easy and just name the files x.action.y or x.action
 
-var load_system_from_path = function(sys_when_do_root_folder, callback){
-	
-	var actions = load_actions_path(path.resolve(sys_when_do_root_folder,'actions'));
-	var states = load_states_path (path.resolve(sys_when_do_root_folder,'state'));
-	var conditions = load_conditions_path(path.resolve(sys_condition_folder,'conditions'));
-	var new_system = new system(actions,conditions);
-	callback(new_system);
-	
+var load_system_from_path = function(sys_when_do_root_folder){
+    
+	//var actions = load_actions_path(path.resolve(sys_when_do_root_folder,'actions'));
+	var states = load_states_path (path.resolve(sys_when_do_root_folder,'states'));
+	//var conditions = load_conditions_path(path.resolve(sys_condition_folder,'conditions'));
+	var new_system = new system(undefined,states,undefined);
+    
+    var promise = new Promise((resolve,reject)=>{
+        states.then((loaded_states)=>{
+            new_system.states = loaded_states;
+            resolve(new_system);
+        });
+       
+    });
+    return promise;
 };
 
 // --------- these should be private
@@ -116,20 +121,28 @@ var load_conditions_path = function(sys_condition_folder){
 };
 
 
-function is_state(state_path){
-    throw (new Error('not implemented'));
-}
 
+// return a promise whose states are passed as an array in
 var load_states_path = function(sys_condition_folder){
-	throw (new Error("not yet implemented"));
 	var states = [ ];
-	fse.walk(sys_condition_folder).on('data',(x)=>{
-        //basically say if matches
-        is_state(x);
-    }).on('end',(x)=>{
-        
+    
+    console.log('--'+state.is_state);
+    var promise = new Promise(function(resolve,reject){
+        fse.walk(sys_condition_folder).on('data',(file)=>{
+            console.log('-#-'+state.is_state);
+            
+            if (state.is_state(file.path)){
+                console.log('added state:  '+file.path);
+                states.push(new state(file.path));
+            }else{
+                console.log('did not add state: '+file.path);
+            }
+        }).on('end',()=>{
+            console.log('done adding states');
+            resolve(states);
+        });
     });
-	return states;
+	return promise;
 }
 
 var load_actions_path = function(sys_condition_folder){
@@ -142,6 +155,8 @@ var t = new state('./mock/states/test.state.bat');
 module.exports = {
 	action: action,
 	state: state,
-    t: t
+    t: t,
+    load_states_path: load_states_path,
+    load_sys: load_system_from_path
 	
 };
