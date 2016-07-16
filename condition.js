@@ -3,6 +3,7 @@
 //logic.when( logic.and(1,humidity_is_high, it_is_night)).do(x)
 
 
+
 var condition = function(get_value){
     this.eval = get_value;
 };
