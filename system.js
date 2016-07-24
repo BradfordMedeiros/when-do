@@ -132,7 +132,8 @@ var condition = function(states,actions, path){
 
 	var the_eval = generate_eval_for_condition(states,json);
     var the_actions = get_ordered_actions_from_json_condition(actions,json);
-    
+
+    this.options = json.options;
     this.is_true = ()=> generate_eval_for_condition(states,json);
     this.actions = the_actions;
     this.path = path;
@@ -363,11 +364,4 @@ var load_actions_path = function(sys_condition_folder){
 };
 
 var t = new state('./mock/states/test.state.bat');
-module.exports = {
-	action: action,
-	state: state,
-    t: t,
-    load_states_path: load_states_path,
-    load_sys: load_system_from_path
-	
-};
+module.exports = load_system_from_path

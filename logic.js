@@ -56,6 +56,36 @@ execute.prototype.do = function(action,options){
 	return new handle(logic, condition.handle_id);
 };
 
+/*function start_condition(condition){
+
+	handle_count++;
+
+	var times_eval_called = 0;
+	var times_action_called = 0;
+
+	var the_handle = setInterval(function(){
+
+		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
+			times_eval_called++;
+
+			var condition_eval = condition.evaluator(condition.data)
+			condition.value = condition_eval;
+			if (condition_eval){
+				times_action_called++;
+				condition.action(condition.data);
+			}
+		}else{
+			clearInterval(the_handle);
+			logic.remove_condition(condition.handle_id);
+		}
+	},condition.rate);
+
+	condition.state = 'active';
+	condition.interval_handle = the_handle;
+	logic.conditions.push(condition);
+	return the_handle;
+};*/
+
 function start_condition(condition){
 	
     handle_count++;
@@ -67,12 +97,25 @@ function start_condition(condition){
 
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
-			
-            var condition_eval = condition.evaluator(condition.data)
-            condition.value = condition_eval;
-			if (condition_eval){
-				times_action_called++;
-				condition.action(condition.data);
+
+			var condition_eval = condition.evaluator(condition.data);
+
+			// if object we assume it's a promise of type { result: true/false, values }
+			if (typeof (condition_eval) === typeof({})){
+				condition_eval.then((value)=>{
+					condition.value = value.result;
+					if (value.result){
+						times_action_called++;
+						condition.action(condition.data);
+					}
+				});
+			}else{
+				// else it's a function
+				condition.value = condition_eval;
+				if (condition_eval){
+					times_action_called++;
+					condition.action(condition.data);
+				}
 			}
 		}else{
 			clearInterval(the_handle);
@@ -90,7 +133,7 @@ function start_condition(condition){
 logic.remove_condition = function (id){
 	console.log('removing '+id);
 	var conditions_to_remove = this.conditions.filter((condition) => condition.handle_id === id);
-	
+
 	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle));
 	conditions_to_remove.forEach(condition=> condition.state = 'stopped');
 	
@@ -99,7 +142,7 @@ logic.remove_condition = function (id){
 };
 
 // @todo need to make sure we keep eval_limit, action_limit counts and don't mess those up
-logic.resume_condition = function(id){nInThisContext (vm.js:73:16)
+logic.resume_condition = function(id){
 	console.log('resuming '+id)
 
 	var conditions_to_remove = this.conditions.filter(condition => condition.handle_id === id);
