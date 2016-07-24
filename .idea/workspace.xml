@@ -4,8 +4,6 @@
     <list default="true" id="5581d4da-a220-4567-8391-ec68c72fa884" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/example0.condition.json" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/example_json_condition1.json" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/logic.js" afterPath="$PROJECT_DIR$/logic.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/system.js" afterPath="$PROJECT_DIR$/system.js" />
     </list>
     <ignored path="when_do.iws" />
@@ -30,8 +28,8 @@
       <file leaf-file-name="run.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+            <state relative-caret-position="400">
+              <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -42,18 +40,18 @@
       <file leaf-file-name="system.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/system.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="651">
-              <caret line="366" column="38" selection-start-line="366" selection-start-column="38" selection-end-line="366" selection-end-column="38" />
+            <state relative-caret-position="463">
+              <caret line="139" column="31" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
               <folding>
                 <element signature="e#215#1240#0" expanded="false" />
                 <element signature="e#1283#1334#0" expanded="false" />
                 <element signature="e#1602#2720#0" expanded="false" />
                 <element signature="n#!!block;n#is_identifier#0" expanded="false" />
-                <element signature="e#5021#5575#0" expanded="false" />
+                <element signature="e#5104#5658#0" expanded="false" />
                 <element signature="n#!!block;n#get_ordered_actions_from_json_condition#0" expanded="false" />
-                <element signature="e#9369#10313#0" expanded="false" />
-                <element signature="e#10431#11019#0" expanded="false" />
-                <element signature="e#11075#11710#0" expanded="false" />
+                <element signature="e#9452#10396#0" expanded="false" />
+                <element signature="e#10514#11102#0" expanded="false" />
+                <element signature="e#11158#11793#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -72,8 +70,8 @@
       <file leaf-file-name="logic.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/logic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="111" column="18" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
+            <state relative-caret-position="209">
+              <caret line="103" column="21" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -115,8 +113,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/action.js" />
-        <option value="$PROJECT_DIR$/system.js" />
         <option value="$PROJECT_DIR$/logic.js" />
+        <option value="$PROJECT_DIR$/system.js" />
         <option value="$PROJECT_DIR$/run.js" />
       </list>
     </option>
@@ -279,18 +277,18 @@
       <updated>1469296473527</updated>
       <workItem from="1469296474818" duration="579000" />
       <workItem from="1469297127564" duration="47000" />
-      <workItem from="1469312958069" duration="16657000" />
+      <workItem from="1469312958069" duration="18398000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17283000" />
+    <option name="totallyTimeSpent" value="19024000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15416667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15416667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -324,13 +322,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/system.js</url>
-          <line>344</line>
+          <line>346</line>
           <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/system.js</url>
-          <line>273</line>
+          <line>275</line>
           <properties />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
@@ -424,36 +422,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/logic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="103" column="21" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/system.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="366" column="38" selection-start-line="366" selection-start-column="38" selection-end-line="366" selection-end-column="38" />
+        <state relative-caret-position="463">
+          <caret line="139" column="31" selection-start-line="139" selection-start-column="31" selection-end-line="139" selection-end-column="31" />
           <folding>
             <element signature="e#215#1240#0" expanded="false" />
             <element signature="e#1283#1334#0" expanded="false" />
             <element signature="e#1602#2720#0" expanded="false" />
             <element signature="n#!!block;n#is_identifier#0" expanded="false" />
-            <element signature="e#5021#5575#0" expanded="false" />
+            <element signature="e#5104#5658#0" expanded="false" />
             <element signature="n#!!block;n#get_ordered_actions_from_json_condition#0" expanded="false" />
-            <element signature="e#9369#10313#0" expanded="false" />
-            <element signature="e#10431#11019#0" expanded="false" />
-            <element signature="e#11075#11710#0" expanded="false" />
+            <element signature="e#9452#10396#0" expanded="false" />
+            <element signature="e#10514#11102#0" expanded="false" />
+            <element signature="e#11158#11793#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="111" column="18" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+        <state relative-caret-position="400">
+          <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

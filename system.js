@@ -136,6 +136,8 @@ var condition = function(states,actions, path){
     this.options = json.options;
     this.is_true = ()=> generate_eval_for_condition(states,json);
     this.actions = the_actions;
+
+    this.execute_actions = ()=>this.actions.forEach((action)=> action.execute());
     this.path = path;
 };
 
