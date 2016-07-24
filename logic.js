@@ -88,10 +88,10 @@ function start_condition(condition){
 
 
 logic.remove_condition = function (id){
-	console.log('removing '+id)
-	var conditions_to_remove = this.conditions.filter(condition => condition.handle_id === id);
+	console.log('removing '+id);
+	var conditions_to_remove = this.conditions.filter((condition) => condition.handle_id === id);
 	
-	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle))
+	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle));
 	conditions_to_remove.forEach(condition=> condition.state = 'stopped');
 	
 	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id)
@@ -99,7 +99,7 @@ logic.remove_condition = function (id){
 };
 
 // @todo need to make sure we keep eval_limit, action_limit counts and don't mess those up
-logic.resume_condition = function(id){
+logic.resume_condition = function(id){nInThisContext (vm.js:73:16)
 	console.log('resuming '+id)
 
 	var conditions_to_remove = this.conditions.filter(condition => condition.handle_id === id);

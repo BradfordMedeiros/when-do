@@ -5,11 +5,6 @@
         "state": ["humidity","test"],
         "eval": "(humidity,test)=>humidity==test.temp",
         "action": "turn_on_fan"
-    },
-    {
-        "state": ["humidity"],
-        "eval": "(humidity)=>humidity>10",
-        "action": "turn_on_fan"
     }
 
 ]

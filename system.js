@@ -113,27 +113,29 @@ state.is_state = function(state_path){
 
 
 var condition = function(states,actions, path){
-	
-	var self = this;
-    
-    var json = require(path);
-	var evaluators = generate_eval_for_condition(states,json);
-    var actions = get_ordered_actions_from_json_condition(actions,json);
-    
-    // returns promise that determines if the condition is true or not
-    this.is_true = ()=>new Promise((resolve,reject)=>{
-        var the_promise = Promise.all(evaluators).then(()=>{
-            var truth = [];
-            evaluators.forEach((evaluator)=>evaluator.then((val)=>truth.push(val)));
-            console.log('truth is ');
-            console.log(truth);
-            var is_true = truth.filter((val)=> val === true).length === truth.length;
-            resolve(is_true);
-        });
-    });
-  
 
+    if (states === undefined){
+        throw (new Error("states is not defined in condition"));
+    }
+    if (actions === undefined){
+        throw (new Error("actions is not defined in action "));
+    }
+    if (path === undefined){
+        throw (new Error("path is not defined in condition"));
+    }
+
+	var self = this;
+
+    // do this over require because we want users to be able to reload
+    // and i don't wanna mess around w/ require cache cause that seems bad
+    var json = JSON.parse(fs.readFileSync(path.resolve(path)));
+
+	var the_eval = generate_eval_for_condition(states,json);
+    var the_actions = get_ordered_actions_from_json_condition(actions,json);
     
+    this.is_true = ()=> generate_eval_for_condition(states,json);
+    this.actions = the_actions;
+    this.path = path;
 };
 
 condition.is_condition = function(condition_path){
@@ -169,33 +171,24 @@ var print_shitty_code_warning = function(){
         console.log("----------------------------------------");
 };
 
-function generate_eval_for_condition (states, json_condition){
-    var json_condition_array = [].concat(json_condition);
-    return json_condition_array.map((condition)=>generate_eval_for_single_condition(states,condition));
-}
 
-function generate_eval_for_single_condition(states, json_condition){
+function generate_eval_for_condition(states, json_condition){
 
-    if (json_condition.state.length > 2){
-        throw (new Error("Error:  currently only support 2 or less states for a condition"));
-    }
-    var ordered_states = get_ordered_states_from_json_condition(states,json_condition);    
-    print_shitty_code_warning();
-
+    var ordered_states = get_ordered_states_from_json_condition(states,json_condition);
     var the_eval = eval(json_condition.eval);
         
     // THIS IS THE BAD CODE THE LIMITS THIS TO THREE WHICH IS ABSOLUTE UTTER GARBAGE
-    var value1 = undefined;
-    var value2 = undefined;
-    
+    var values = [ ];
+
     var promises = [ ];
-    if (ordered_states[0] !==undefined){
-        promises.push(ordered_states[0].get_state().then((val)=>value1= val));
-    }
-    if (ordered_states[1] !==undefined){
-        promises.push(ordered_states[1].get_state().then((val)=>value2= val));
-    }
-    
+    ordered_states.forEach(
+        (state,index)=> {
+            var the_promise = state.get_state();
+            promises.push(the_promise);
+            the_promise.then((val)=> values[index] = val);
+        }
+    );
+
     var the_resolver = undefined; 
     var the_rejecter = undefined;
     var public_promise = new Promise(function(resolve,reject){
@@ -205,26 +198,28 @@ function generate_eval_for_single_condition(states, json_condition){
     
     var private_promise = Promise.all(promises).then(()=>{
          try{
-            var result = the_eval(value1,value2);
-            the_resolver(result);
+            var result = the_eval.apply(null,values);
+             console.log('val:',values);
+            the_resolver({
+                result: result,
+                values: values
+            });
          }catch(e){
-            the_rejecter(e);
+            the_rejecter({
+                result: result,
+                values: values
+            });
          }
     });
  
-    return public_promise;;
+    return public_promise;
     
     
 };
 
-function get_ordered_actions_from_json_condition(actions,json_condition){
-    var json_condition_array = [].concat(json_condition);
-    return json_condition_array.map((condition)=>get_ordered_actions_from_single_json_condition(actions,condition));
-}
-
 // I want to eventually be able to use the whole when_do.js library if appropriate based on this
 // for now can only perform basic functionality to do one or more action following the state
-function get_ordered_actions_from_single_json_condition(actions, json_condition){
+function get_ordered_actions_from_json_condition(actions, json_condition){
     var desired_actions = [].concat(json_condition.action);    
     var ordered_actions =  desired_actions.map((action)=> {
             var matching_actions = actions.filter((the_action) => the_action.get_name() == action);
@@ -253,32 +248,69 @@ var system = function(actions,states,conditions){
 // make it easy and just name the files x.action.y or x.action
 
 var load_system_from_path = function(sys_when_do_root_folder){
-    
-	var actions = load_actions_path(path.resolve(sys_when_do_root_folder,'actions'));
-	var states = load_states_path (path.resolve(sys_when_do_root_folder,'states'));
-	//var conditions = load_conditions_path(path.resolve(sys_condition_folder,'conditions'));
-	var new_system = new system(undefined,states,undefined);
-    
-    var promise = new Promise((resolve,reject)=>{
-        var the_states = undefined;
-        var the_actions = undefined;
-        actions.then((a)=> new_system.actions = a);
-        states.then((s)=> new_system.states = s);
-        
-        Promise.all([states,actions]).then((loaded_states)=>{
-            resolve(new_system);
-        });
+
+    console.log('//////////////////////////');
+    var resolver = undefined;
+    var rejector = undefined;
+    var system_loaded_promise = new Promise((resolve,reject)=>{
+        resolver = resolve;
+        rejector = reject;
     });
-    return promise;
+
+    var the_system = new system;
+
+    var actions = load_actions_path(path.resolve(sys_when_do_root_folder,'actions'));
+	actions.then((a)=> the_system.actions = a);
+
+    var states = load_states_path (path.resolve(sys_when_do_root_folder,'states'));
+	states.then((s)=> the_system.states = s);
+
+    Promise.all([actions,states]).then(()=>{
+        console.log ('states-------------////////////////' ,states);
+        var conditions = load_conditions_path(
+            the_system.states,
+            the_system.actions,
+            path.resolve(sys_when_do_root_folder,'conditions'));
+
+        conditions.then((c)=>{
+            the_system.conditions = c
+            resolver(the_system);
+        }).catch(rejector);
+    });
+
+    console.log('-----------------loading system loaded',system_loaded_promise)
+    return system_loaded_promise;
 };
 
 // --------- these should be private
 // returns conditions
-var load_conditions_path = function(sys_condition_folder){
-	throw (new Error("not yet implemented"));
+var load_conditions_path = function(states,actions, sys_condition_folder){
+    if (states === undefined){
+        throw (new Error("states undefined while loading conditions"));
+    }
+    if (actions === undefined){
+        throw (new Error("actions undefined while loading conditions"));
+    }
+    if (sys_condition_folder === undefined){
+        throw (new Error("sys_condition_folder is undefined while loading conditions"));
+    }
+
 	var conditions = [ ];
-	
-	return conditions;
+
+    var conditions_promise = new Promise (function(resolve,reject){
+       fse.walk(sys_condition_folder).on("data",(file)=>{
+           if (condition.is_condition(file.path)){
+               console.log("added condition:  "+file.path);
+               conditions.push(new condition(states,actions,file.path));
+           }else{
+               console.log("did not add state: "+file.path);
+           }
+       }).on("end",()=>{
+           console.log("done adding conditions");
+           resolve(conditions);
+       });
+    });
+	return conditions_promise;
 };
 
 
@@ -288,7 +320,6 @@ var load_conditions_path = function(sys_condition_folder){
 var load_states_path = function(sys_condition_folder){
 	var states = [ ];
     
-    console.log('--'+state.is_state);
     var promise = new Promise(function(resolve,reject){
         fse.walk(sys_condition_folder).on('data',(file)=>{
             console.log('-#-'+state.is_state);
