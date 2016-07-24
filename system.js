@@ -128,7 +128,7 @@ var condition = function(states,actions, path){
 
     // do this over require because we want users to be able to reload
     // and i don't wanna mess around w/ require cache cause that seems bad
-    var json = JSON.parse(fs.readFileSync(path.resolve(path)));
+    var json = JSON.parse(fs.readFileSync(path));
 
 	var the_eval = generate_eval_for_condition(states,json);
     var the_actions = get_ordered_actions_from_json_condition(actions,json);
@@ -240,6 +240,8 @@ var system = function(actions,states,conditions){
 	this.states = states;
 	this.conditions = conditions; // path of various conditions available
 };
+
+
 
 
 // generates a system based upon the path to the root folder
