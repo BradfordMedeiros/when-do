@@ -137,7 +137,7 @@ var condition = function(states,actions, path){
 
     // do this over require because we want users to be able to reload
     // and i don't wanna mess around w/ require cache cause that seems bad
-    var json = JSON.parse(fs.readFileSync(path));
+    var json = JSON.parse(fse.readFileSync(path));
 
 	var the_eval = generate_eval_for_condition(states,json);
     var the_actions = get_ordered_actions_from_json_condition(actions,json);
@@ -322,16 +322,16 @@ var load_states_path = function(sys_condition_folder){
     
     var promise = new Promise(function(resolve,reject){
         fse.walk(sys_condition_folder).on('data',(file)=>{
-            console.log('-#-'+state.is_state);
+            //console.log('-#-'+state.is_state);
             
             if (state.is_state(file.path)){
-                console.log('added state:  '+file.path);
+                //console.log('added state:  '+file.path);
                 states.push(new state(file.path));
             }else{
                 console.log('did not add state: '+file.path);
             }
         }).on('end',()=>{
-            console.log('done adding states');
+            //console.log('done adding states');
             resolve(states);
         });
     });
@@ -341,7 +341,7 @@ var load_states_path = function(sys_condition_folder){
 var load_actions_path = function(sys_condition_folder){
 	var actions = [ ];
     
-    console.log('--'+action.is_action);
+    // console.log('--'+action.is_action);
     var promise = new Promise(function(resolve,reject){
         fse.walk(sys_condition_folder).on('data',(file)=>{
             console.log('-#-'+state.is_state);
