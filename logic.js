@@ -95,6 +95,7 @@ function start_condition(condition){
 	
 	var the_handle = setInterval(function(){
 
+		//console.log('being evals')
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
 
@@ -102,14 +103,17 @@ function start_condition(condition){
 
 			// if object we assume it's a promise of type { result: true/false, values }
 			if (typeof (condition_eval) === typeof({})){
+				//console.log('its a promise');
 				condition_eval.then((value)=>{
 					condition.value = value.result;
+					console.log('value is '+value)
 					if (value.result){
 						times_action_called++;
 						condition.action(condition.data);
 					}
 				});
 			}else{
+				//console.log('its a normal function')
 				// else it's a function
 				condition.value = condition_eval;
 				if (condition_eval){

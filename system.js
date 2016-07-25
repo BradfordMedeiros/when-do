@@ -10,15 +10,16 @@ var action = function (the_path){
 	
 	this.path = path.resolve(the_path);
 	// returns a promise
-	this.execute = function(){	
+	this.execute = function(){
+        console.log("Executing action ",self.path);
 		var promise = new Promise(function(resolve,reject){
 			child_process.execFile(self.path,
             {cwd:self.path+'/..'},
             (err,stdout,stderr)=>{
-				console.log('stdout:  '+stdout);
-				console.log('error:  ('+err+")");
-				console.log('$'+typeof(err));
-				console.log('stderr: '+stderr);
+				//console.log('stdout:  '+stdout);
+				//console.log('error:  ('+err+")");
+				//console.log('$'+typeof(err));
+				//console.log('stderr: '+stderr);
 
 				var is_error = false;
                 try{
@@ -29,9 +30,12 @@ var action = function (the_path){
                 }
 				if (err === null && !is_error){
 					resolve(json_result)
-				}else{
+                    console.log("Finished executing action success ",self.path);
+                }else{
 					reject(stderr);
-				}
+                    console.log("Error executing action success ",self.path);
+
+                }
 			});
 		});
 		return promise;
@@ -63,22 +67,27 @@ var state = function (the_path){
 			child_process.execFile(self.path,
             {cwd:self.path+'/..'},
             (err,stdout,stderr)=>{
-				console.log('stderr: '+stderr);
-                console.log(self.get_name()+' return w/ value: '+stdout);
-                
+				//console.log('stderr: '+stderr);
+                //console.log(self.get_name()+' return w/ value: '+stdout);
+                console.log("Executing state ",self.path);
+
                 var is_error = false;
                 try{
                     var json_result = JSON.parse(stdout);
-                    console.log("json result is "+json_result);
+                    //console.log("json result is "+json_result);
                 }catch(e){
                     is_error = true;
                     console.log("json parse failed");
                 }
 				if (err === null && !is_error){
 					resolve(json_result)
-				}else{
+                    console.log("Finished executing state success:  ",json_result," ",self.path);
+
+                }else{
 					reject(stderr);
-				}
+                    console.log("Error executing state success ",self.path);
+
+                }
 			});
 		});
 		return promise;
@@ -137,7 +146,7 @@ var condition = function(states,actions, path){
     this.is_true = ()=> generate_eval_for_condition(states,json);
     this.actions = the_actions;
 
-    this.execute_actions = ()=>this.actions.forEach((action)=> action.execute());
+    this.execute_actions = ()=>self.actions.forEach((action)=> action.execute());
     this.path = path;
 };
 
@@ -158,20 +167,6 @@ function get_ordered_states_from_json_condition(states, json_condition){
             return matching_states[0];
         });
     return ordered_states;       
-};
-
-var print_shitty_code_warning = function(){
-        console.log("----------------------------------------");
-        console.log("----------------------------------------");
-        console.log("----------------------------------------");
-        console.log("----------------------------------------");
-
-        console.log("WARNING HACK THIS MUST BE FIXED");
-        console.log("WARNING HACK THIS MUST BE FIXED");
-
-        console.log("WARNING HACK THIS MUST BE FIXED");
-        console.log("WARNING HACK THIS MUST BE FIXED");
-        console.log("----------------------------------------");
 };
 
 
@@ -202,7 +197,7 @@ function generate_eval_for_condition(states, json_condition){
     var private_promise = Promise.all(promises).then(()=>{
          try{
             var result = the_eval.apply(null,values);
-             console.log('val:',values);
+            // console.log('val:',values);
             the_resolver({
                 result: result,
                 values: values
@@ -254,7 +249,7 @@ var system = function(actions,states,conditions){
 
 var load_system_from_path = function(sys_when_do_root_folder){
 
-    console.log('//////////////////////////');
+    //console.log('//////////////////////////');
     var resolver = undefined;
     var rejector = undefined;
     var system_loaded_promise = new Promise((resolve,reject)=>{
@@ -271,7 +266,7 @@ var load_system_from_path = function(sys_when_do_root_folder){
 	states.then((s)=> the_system.states = s);
 
     Promise.all([actions,states]).then(()=>{
-        console.log ('states-------------////////////////' ,states);
+        //console.log ('states-------------////////////////' ,states);
         var conditions = load_conditions_path(
             the_system.states,
             the_system.actions,
@@ -283,7 +278,7 @@ var load_system_from_path = function(sys_when_do_root_folder){
         }).catch(rejector);
     });
 
-    console.log('-----------------loading system loaded',system_loaded_promise)
+    //console.log('-----------------loading system loaded',system_loaded_promise)
     return system_loaded_promise;
 };
 
