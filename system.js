@@ -239,9 +239,6 @@ var system = function(actions,states,conditions){
 	this.conditions = conditions; // path of various conditions available
 };
 
-
-
-
 // generates a system based upon the path to the root folder
 // make into a promise
 // need to do a recursive walk of the file system
@@ -313,9 +310,6 @@ var load_conditions_path = function(states,actions, sys_condition_folder){
 	return conditions_promise;
 };
 
-
-
-
 // return a promise whose states are passed as an array in
 var load_states_path = function(sys_condition_folder){
 	var states = [ ];
@@ -360,5 +354,90 @@ var load_actions_path = function(sys_condition_folder){
 	return promise;
 };
 
-var t = new state('./mock/states/test.state.bat');
-module.exports = load_system_from_path
+
+// http://stackoverflow.com/questions/11775884/nodejs-file-permissions
+var PERMISSION_CONSTANTS = {
+    "can_read": 4,
+    "can_write": 2,
+    "can_execute": 1
+}
+
+var check_permission = function (file, mask){
+    return new Promise(function(resolve,reject){
+        fs.stat (path.resolve(file), function (error, stats){
+            if (error){
+                reject();
+            }else{
+                resolve(!!(mask & parseInt ((stats.mode & parseInt ("777", 8)).toString (8)[0])));
+            }
+        });
+    });   
+};
+
+var can_read_file = function(file){
+    return check_permission(file,PERMISSION_CONSTANTS["can_read"]);
+};
+
+var can_write_file = function(file){
+    return check_permission(file,PERMISSION_CONSTANTS["can_write"]);
+};
+
+var can_execute_file = function(file){
+    return check_permission(file,PERMISSION_CONSTANTS["can_execute"]);
+};
+
+// Returns json result from the file
+// Executes file if it's executable, else reads it
+// Expects contents to be json file
+var generate_json_result_from_file = function(file){
+   
+    var can_execute = can_execute_file(file);
+    can_execute.then((is_executable)=>{
+        if(is_executable){
+            return new Promise(function(resolve,reject){
+                child_process.execFile(self.path,
+                    {cwd:self.path+'/..'},
+                    (err,stdout,stderr)=>{
+                    //console.log('stderr: '+stderr);
+                    //console.log(self.get_name()+' return w/ value: '+stdout);
+                    console.log("Executing state ",self.path);
+
+                    var is_error = false;
+                    try{
+                        var json_result = JSON.parse(stdout);
+                        //console.log("json result is "+json_result);
+                    }catch(e){
+                        is_error = true;
+                        console.log("json parse failed");
+                    }
+                    if (err === null && !is_error){
+                        resolve(json_result)
+                        console.log("Finished executing state success:  ",json_result," ",self.path);
+
+                    }else{
+                        reject(stderr);
+                        console.log("Error executing state success ",self.path);
+                    }
+                });
+            });
+        }else{
+            console.log('not execuable');
+        }
+    });
+    can_execute.catch(()=>{
+        console.log("error in generate_json_result_from_file");
+       
+    });
+    
+};
+
+module.exports =  { 
+    load_system_from_path: load_system_from_path,
+    action: action,
+    state: state,
+    condition: condition,
+    generate_json_result_from_file:generate_json_result_from_file,
+    can_execute_file: can_execute_file,
+    can_read_file: can_read_file
+}
+    
