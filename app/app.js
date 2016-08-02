@@ -26,7 +26,10 @@ load_system(APP_FOLDER).then((system)=>{
     // starts evaluating the conditions and calling them when they become true
     the_system.conditions.forEach(condition=>{
         console.log("Adding condition :"+condition.path);
-        logic.when({},condition.is_true).do(condition.execute_actions);
+        logic.when({},condition.is_true).do((x)=>{
+            console.log("-----------------------");
+            condition.execute_actions(x);
+        });
     });
 });
 

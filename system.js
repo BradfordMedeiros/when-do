@@ -10,36 +10,7 @@ var action = function (the_path){
 	
 	this.path = path.resolve(the_path);
 	// returns a promise
-	this.execute = function(){
-        console.log("Executing action ",self.path);
-		var promise = new Promise(function(resolve,reject){
-			child_process.execFile(self.path,
-            {cwd:self.path+'/..'},
-            (err,stdout,stderr)=>{
-				//console.log('stdout:  '+stdout);
-				//console.log('error:  ('+err+")");
-				//console.log('$'+typeof(err));
-				//console.log('stderr: '+stderr);
-
-				var is_error = false;
-                try{
-                    var json_result = JSON.parse(stdout);
-                   
-                }catch(e){
-                    is_error = true;
-                }
-				if (err === null && !is_error){
-					resolve(json_result)
-                    console.log("Finished executing action success ",self.path);
-                }else{
-					reject(stderr);
-                    console.log("Error executing action success ",self.path);
-
-                }
-			});
-		});
-		return promise;
-	};
+	this.execute = (value)=>generate_action_promise(the_path,value);
     
     this.get_name = function(state_name){
         // we consider the name the filename but not including the extension (.action.*)
@@ -62,37 +33,8 @@ var state = function (the_path){
 	this.path = path.resolve(the_path);
    
 	// returns a promise
-	this.get_state = function(){	
-		var promise = new Promise(function(resolve,reject){
-			child_process.execFile(self.path,
-            {cwd:self.path+'/..'},
-            (err,stdout,stderr)=>{
-				//console.log('stderr: '+stderr);
-                //console.log(self.get_name()+' return w/ value: '+stdout);
-                console.log("Executing state ",self.path);
+	this.get_state = ()=> generate_state_promise(self.path);
 
-                var is_error = false;
-                try{
-                    var json_result = JSON.parse(stdout);
-                    //console.log("json result is "+json_result);
-                }catch(e){
-                    is_error = true;
-                    console.log("json parse failed");
-                }
-				if (err === null && !is_error){
-					resolve(json_result)
-                    console.log("Finished executing state success:  ",json_result," ",self.path);
-
-                }else{
-					reject(stderr);
-                    console.log("Error executing state success ",self.path);
-
-                }
-			});
-		});
-		return promise;
-	};
-    
     this.get_name = function(state_name){
         // we consider the name the filename but not including the extension (.state.*)
         var base_name = path.basename(this.path);
@@ -156,6 +98,7 @@ condition.is_condition = function(condition_path){
 
 // returns array of the states ordered to pass into eval of the condition
 function get_ordered_states_from_json_condition(states, json_condition){
+    
     var desired_states = [].concat(json_condition.state);    
     var ordered_states =  desired_states.map((state)=> {
             var matching_states = states.filter((the_state) => the_state.get_name() == state);
@@ -175,7 +118,6 @@ function generate_eval_for_condition(states, json_condition){
     var ordered_states = get_ordered_states_from_json_condition(states,json_condition);
     var the_eval = eval(json_condition.eval);
         
-    // THIS IS THE BAD CODE THE LIMITS THIS TO THREE WHICH IS ABSOLUTE UTTER GARBAGE
     var values = [ ];
 
     var promises = [ ];
@@ -279,8 +221,6 @@ var load_system_from_path = function(sys_when_do_root_folder){
     return system_loaded_promise;
 };
 
-// --------- these should be private
-// returns conditions
 var load_conditions_path = function(states,actions, sys_condition_folder){
     if (states === undefined){
         throw (new Error("states undefined while loading conditions"));
@@ -310,7 +250,6 @@ var load_conditions_path = function(states,actions, sys_condition_folder){
 	return conditions_promise;
 };
 
-// return a promise whose states are passed as an array in
 var load_states_path = function(sys_condition_folder){
 	var states = [ ];
     
@@ -354,90 +293,97 @@ var load_actions_path = function(sys_condition_folder){
 	return promise;
 };
 
-
-// http://stackoverflow.com/questions/11775884/nodejs-file-permissions
-var PERMISSION_CONSTANTS = {
-    "can_read": 4,
-    "can_write": 2,
-    "can_execute": 1
-}
-
-var check_permission = function (file, mask){
-    return new Promise(function(resolve,reject){
-        fs.stat (path.resolve(file), function (error, stats){
-            if (error){
-                reject();
-            }else{
-                resolve(!!(mask & parseInt ((stats.mode & parseInt ("777", 8)).toString (8)[0])));
-            }
-        });
-    });   
-};
-
-var can_read_file = function(file){
-    return check_permission(file,PERMISSION_CONSTANTS["can_read"]);
-};
-
-var can_write_file = function(file){
-    return check_permission(file,PERMISSION_CONSTANTS["can_write"]);
-};
-
-var can_execute_file = function(file){
-    return check_permission(file,PERMISSION_CONSTANTS["can_execute"]);
-};
-
 // Returns json result from the file
 // Executes file if it's executable, else reads it
 // Expects contents to be json file
-var generate_json_result_from_file = function(file){
+var generate_state_promise = function(the_path){
    
-    var can_execute = can_execute_file(file);
-    can_execute.then((is_executable)=>{
-        if(is_executable){
-            return new Promise(function(resolve,reject){
-                child_process.execFile(self.path,
-                    {cwd:self.path+'/..'},
-                    (err,stdout,stderr)=>{
-                    //console.log('stderr: '+stderr);
-                    //console.log(self.get_name()+' return w/ value: '+stdout);
-                    console.log("Executing state ",self.path);
-
-                    var is_error = false;
-                    try{
-                        var json_result = JSON.parse(stdout);
-                        //console.log("json result is "+json_result);
-                    }catch(e){
-                        is_error = true;
-                        console.log("json parse failed");
-                    }
-                    if (err === null && !is_error){
-                        resolve(json_result)
-                        console.log("Finished executing state success:  ",json_result," ",self.path);
-
-                    }else{
-                        reject(stderr);
-                        console.log("Error executing state success ",self.path);
-                    }
-                });
-            });
-        }else{
-            console.log('not execuable');
-        }
-    });
-    can_execute.catch(()=>{
-        console.log("error in generate_json_result_from_file");
-       
-    });
+    var parts = the_path.split(".");
+    var is_json = parts[parts.length-1] === "json";
     
+    var the_promise = undefined;
+    if (is_json){
+        console.log("it is a json");
+        the_promise = new Promise(function(resolve,reject){
+            fs.readFile(the_path, "utf-8", (error, value)=>{
+                if (error){
+                    reject(error);
+                }else{
+                    resolve(JSON.parse(value));
+                }
+            });
+        });
+    }else{
+        the_promise = new Promise(function(resolve,reject){
+			child_process.execFile(the_path,
+            {cwd:the_path+'/..'},
+            (err,stdout,stderr)=>{
+
+				var is_error = false;
+                try{
+                    var json_result = JSON.parse(stdout);
+                   
+                }catch(e){
+                    is_error = true;
+                }
+				if (err === null && !is_error){
+					resolve(json_result)
+                    //console.log("Finished executing state success ",the_path);
+                }else{
+					reject(stderr);
+                    console.log("Error executing state success ",the_path);
+                }
+			});
+		});
+    }
+    return the_promise;
+
 };
 
-module.exports =  { 
-    load_system_from_path: load_system_from_path,
-    action: action,
-    state: state,
-    condition: condition,
-    generate_json_result_from_file:generate_json_result_from_file,
-    can_execute_file: can_execute_file,
-    can_read_file: can_read_file
+
+var generate_action_promise = function(the_path, json_value){
+    var parts = the_path.split(".");
+    var is_json = parts[parts.length-1] === "json";
+    
+    var the_promise = undefined;
+    if (is_json){       
+        console.log("writing json file");
+        var the_json_value = json_value !== undefined? json_value: "0";
+        
+        // this should be changed eventually but should be fine for now
+        child_process.exec("echo "+the_json_value+" > "+the_path,function(err){
+            if (err){
+                console.log(err);
+            }else{
+                console.log("finished writing file ",the_path);
+            }
+        });
+    }else{
+        the_promise = new Promise(function(resolve,reject){
+			child_process.execFile(the_path,
+            {cwd:the_path+'/..'},
+            (err,stdout,stderr)=>{
+
+				var is_error = false;
+                try{
+                    var json_result = JSON.parse(stdout);
+                   
+                }catch(e){
+                    is_error = true;
+                }
+				if (err === null && !is_error){
+					resolve(json_result)
+                    console.log("Finished executing action success ",the_path);
+                }else{
+					reject(stderr);
+                    console.log("Error executing action success ",the_path);
+                }
+			});
+		});
+        return the_promise;
+    }
 }
+
+
+module.exports = load_system_from_path;
     
