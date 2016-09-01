@@ -56,36 +56,6 @@ execute.prototype.do = function(action,options){
 	return new handle(logic, condition.handle_id);
 };
 
-/*function start_condition(condition){
-
-	handle_count++;
-
-	var times_eval_called = 0;
-	var times_action_called = 0;
-
-	var the_handle = setInterval(function(){
-
-		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
-			times_eval_called++;
-
-			var condition_eval = condition.evaluator(condition.data)
-			condition.value = condition_eval;
-			if (condition_eval){
-				times_action_called++;
-				condition.action(condition.data);
-			}
-		}else{
-			clearInterval(the_handle);
-			logic.remove_condition(condition.handle_id);
-		}
-	},condition.rate);
-
-	condition.state = 'active';
-	condition.interval_handle = the_handle;
-	logic.conditions.push(condition);
-	return the_handle;
-};*/
-
 function start_condition(condition){
 	
     handle_count++;
@@ -95,7 +65,6 @@ function start_condition(condition){
 	
 	var the_handle = setInterval(function(){
 
-		//console.log('being evals')
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
 

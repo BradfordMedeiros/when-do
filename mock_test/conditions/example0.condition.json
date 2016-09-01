@@ -1,0 +1,6 @@
+
+{
+	"state": ["humidity","test"],
+	"eval": "(humidity,test)=>humidity>0",
+	"action": ["fan_on"]
+}

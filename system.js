@@ -326,12 +326,14 @@ var generate_state_promise = function(the_path){
                 }catch(e){
                     is_error = true;
                 }
-				if (err === null && !is_error){
+				if (err !== null && !is_error){
+                    console.log("Finished executing state success ",the_path);
 					resolve(json_result)
-                    //console.log("Finished executing state success ",the_path);
                 }else{
-					reject(stderr);
                     console.log("Error executing state success ",the_path);
+                    console.log("expected json got ",stdout);
+					reject(stderr);
+
                 }
 			});
 		});
@@ -372,11 +374,13 @@ var generate_action_promise = function(the_path, json_value){
                     is_error = true;
                 }
 				if (err === null && !is_error){
-					resolve(json_result)
                     console.log("Finished executing action success ",the_path);
+					resolve(json_result)
                 }else{
-					reject(stderr);
                     console.log("Error executing action success ",the_path);
+                    console.log("expected json got ",stdout);
+                    reject(stderr);
+
                 }
 			});
 		});

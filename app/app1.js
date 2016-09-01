@@ -13,7 +13,7 @@
 
 var path = require("path");
 
-var APP_FOLDER = path.resolve("../mock0/");
+var APP_FOLDER = path.resolve("../../run/mock/");
 
 var logic = require("../logic.js");
 var load_system = require("../system");
