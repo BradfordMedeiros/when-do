@@ -61,8 +61,6 @@ state.is_state = function(state_path){
     return is_identifier(state_path,'state');
 };
 
-
-
 var condition = function(states,actions, path){
 
     if (states === undefined){
@@ -342,10 +340,13 @@ var generate_action_promise = function(the_path, json_value){
         console.log("writing json file");
         var the_json_value = json_value !== undefined? json_value: "0";
         
+        var command = "echo "+the_json_value+" > "+the_path;
+        console.log("calling ", command);
         // this should be changed eventually but should be fine for now
-        child_process.exec("echo "+the_json_value+" > "+the_path,function(err){
+        child_process.exec(command,function(err){
             if (err){
                 console.log(err);
+                console.log("warning error");
             }else{
                 console.log("finished writing file ",the_path);
             }
