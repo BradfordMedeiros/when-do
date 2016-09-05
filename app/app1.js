@@ -16,18 +16,19 @@ var path = require("path");
 var APP_FOLDER = path.resolve("../../run/mock/");
 
 var logic = require("../logic.js");
-var load_system = require("../system");
+var load_system = require("../system.js");
 
 var the_system = undefined;
 
+console.log("loading system from ",APP_FOLDER );
 load_system(APP_FOLDER).then((system)=>{
     the_system = system;
 
     // starts evaluating the conditions and calling them when they become true
     the_system.conditions.forEach(condition=>{
-        console.log("Adding condition :"+condition.path);
+        console.log("adding condition");
         logic.when({},condition.is_true).do((x)=>{
-            console.log("-----------------------");
+            console.log("executing condition");
             condition.execute_actions(x);
         });
     });

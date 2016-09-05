@@ -114,10 +114,11 @@ function get_ordered_states_from_json_condition(states, json_condition){
 
 
 function generate_eval_for_condition(states, json_condition){
-
+    
     var ordered_states = get_ordered_states_from_json_condition(states,json_condition);
     var the_eval = eval(json_condition.eval);
         
+    console.log("gen eval 0");
     var values = [ ];
 
     var promises = [ ];
@@ -128,6 +129,7 @@ function generate_eval_for_condition(states, json_condition){
             the_promise.then((val)=> values[index] = val);
         }
     );
+    console.log("finisihed pushing states");
 
     var the_resolver = undefined; 
     var the_rejecter = undefined;
@@ -137,9 +139,10 @@ function generate_eval_for_condition(states, json_condition){
     });
     
     var private_promise = Promise.all(promises).then(()=>{
+        console.log("exexuting");
          try{
             var result = the_eval.apply(null,values);
-            // console.log('val:',values);
+            console.log('val:',values);
             the_resolver({
                 result: result,
                 values: values
@@ -150,7 +153,11 @@ function generate_eval_for_condition(states, json_condition){
                 values: values
             });
          }
+    }).catch((x)=>{
+          console.log("error :",x);
     });
+    
+    console.log("generated promise");
  
     return public_promise;
     
@@ -188,7 +195,6 @@ var system = function(actions,states,conditions){
 
 var load_system_from_path = function(sys_when_do_root_folder){
 
-    //console.log('//////////////////////////');
     var resolver = undefined;
     var rejector = undefined;
     var system_loaded_promise = new Promise((resolve,reject)=>{
@@ -205,7 +211,6 @@ var load_system_from_path = function(sys_when_do_root_folder){
 	states.then((s)=> the_system.states = s);
 
     Promise.all([actions,states]).then(()=>{
-        //console.log ('states-------------////////////////' ,states);
         var conditions = load_conditions_path(
             the_system.states,
             the_system.actions,
@@ -216,8 +221,6 @@ var load_system_from_path = function(sys_when_do_root_folder){
             resolver(the_system);
         }).catch(rejector);
     });
-
-    //console.log('-----------------loading system loaded',system_loaded_promise)
     return system_loaded_promise;
 };
 
@@ -239,8 +242,6 @@ var load_conditions_path = function(states,actions, sys_condition_folder){
            if (condition.is_condition(file.path)){
                console.log("added condition:  "+file.path);
                conditions.push(new condition(states,actions,file.path));
-           }else{
-               console.log("did not add state: "+file.path);
            }
        }).on("end",()=>{
            console.log("done adding conditions");
@@ -254,17 +255,12 @@ var load_states_path = function(sys_condition_folder){
 	var states = [ ];
     
     var promise = new Promise(function(resolve,reject){
-        fse.walk(sys_condition_folder).on('data',(file)=>{
-            //console.log('-#-'+state.is_state);
-            
+        fse.walk(sys_condition_folder).on('data',(file)=>{            
             if (state.is_state(file.path)){
-                //console.log('added state:  '+file.path);
+                console.log('added state:  '+file.path);
                 states.push(new state(file.path));
-            }else{
-                console.log('did not add state: '+file.path);
             }
         }).on('end',()=>{
-            //console.log('done adding states');
             resolve(states);
         });
     });
@@ -274,19 +270,14 @@ var load_states_path = function(sys_condition_folder){
 var load_actions_path = function(sys_condition_folder){
 	var actions = [ ];
     
-    // console.log('--'+action.is_action);
     var promise = new Promise(function(resolve,reject){
-        fse.walk(sys_condition_folder).on('data',(file)=>{
-            console.log('-#-'+state.is_state);
-            
+        fse.walk(sys_condition_folder).on('data',(file)=>{            
             if (action.is_action(file.path)){
-                console.log('added state:  '+file.path);
+                console.log('added action:  '+file.path);
                 actions.push(new action(file.path));
-            }else{
-                console.log('did not add action: '+file.path);
             }
         }).on('end',()=>{
-            console.log('done adding states');
+            console.log('done adding actions');
             resolve(actions);
         });
     });
@@ -303,9 +294,8 @@ var generate_state_promise = function(the_path){
     
     var the_promise = undefined;
     if (is_json){
-        console.log("it is a json");
         the_promise = new Promise(function(resolve,reject){
-            fs.readFile(the_path, "utf-8", (error, value)=>{
+            fse.readFile(the_path, "utf-8", (error, value)=>{
                 if (error){
                     reject(error);
                 }else{
@@ -327,7 +317,7 @@ var generate_state_promise = function(the_path){
                     is_error = true;
                 }
 				if (err !== null && !is_error){
-                    console.log("Finished executing state success ",the_path);
+                    //console.log("Finished executing state success ",the_path);
 					resolve(json_result)
                 }else{
                     console.log("Error executing state success ",the_path);
