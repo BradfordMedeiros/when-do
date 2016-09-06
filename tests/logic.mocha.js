@@ -87,6 +87,33 @@ describe('logic - basic evaluation tests', function(){
     });
 });
 
+describe('logic - evaluation tests for promises', function(){
+    it ('calls the function if the promise evaluates to true', function(done){
+        var value = { val: false };
+        logic.when({}, ()=> new Promise(function(resolve,reject){
+            resolve({
+                result: true,
+                values: [ ]
+            });
+        })).do(()=> { value.val = true},{rate: 10});
+        
+        var promise = get_value_is_true_checker_promise(value);
+        
+        // pass condition
+        promise.then(()=> done());
+        
+        // fail condition
+        promise.catch((reason)=> 
+            { 
+                assert.fail('pass','fail','value.val was false, should have been set to true')
+                done();
+            }
+        );
+    });
+    it ('does not call the function if the promise evaluates to false');
+   
+});
+
 describe ('logic - optional parameters', function(){
     it ('optional limit of the number of times to evaluate the condition');
     it ('optional limit for the number of times to call the action');
@@ -95,15 +122,6 @@ describe ('logic - optional parameters', function(){
     
 });
 
-describe ('handle interfaces', function(){
-    it ('can pause');
-    it ('can pause and then be resumed');
-    it ('can be stopped');
-    it ('pause state after being paused');
-    it ('active state after being resumed');
-    it ('stopped state after being stopped');
-    it ('cannot be resumed after being stopped');
-});
 
 // returns a promise that checks value.val ever 100 ms for a maximum of 15 tries 
 function get_value_is_true_checker_promise (value){
