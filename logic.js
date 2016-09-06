@@ -9,7 +9,7 @@ var logic = {
     
     when: function(data, evaluator){
         if (typeof (evaluator) !== typeof(function(){})){
-            throw (new Error('evalutor must be defined as a function'));
+            throw (new Error('evaluator must be defined as a function'));
         }
     	this.type = 'when';
         return new execute(data,evaluator)
@@ -65,7 +65,6 @@ function start_condition(condition){
 	
 	var the_handle = setInterval(function(){
 
-        console.log("evaluating ");
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
 
@@ -73,7 +72,6 @@ function start_condition(condition){
 
 			// if object we assume it's a promise of type { result: true/false, values }
 			if (typeof (condition_eval) === typeof({})){
-                console.log("it's a promise");
 				condition_eval.then((value)=>{
 					condition.value = value.result;
 					if (value.result){
@@ -126,7 +124,7 @@ logic.resume_condition = function(id){
 };
 
 logic.pause_condition = function(id){
-	console.log('pasuing '+id)
+	console.log('pausing '+id)
 	var conditions_to_pause= this.conditions.filter(condition => condition.handle_id === id);
 	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle))
 	conditions.to_remove.forEach(condition=> condition.state = 'paused');
