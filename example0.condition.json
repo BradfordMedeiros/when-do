@@ -1,6 +1,0 @@
-
-{
-	"state": "humidity",
-	"eval": "(humidity)=>humidity>10",
-	"action": "turn_on_fan.bat"
-}

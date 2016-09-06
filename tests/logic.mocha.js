@@ -87,7 +87,7 @@ describe('logic - basic evaluation tests', function(){
     });
 });
 
-describe('logic - evaluation tests for promises', function(){
+describe('logic - evaluation tests for function returning promises (instead of true/false)', function(){
     it ('calls the function if the promise evaluates to true', function(done){
         var value = { val: false };
         logic.when({}, ()=> new Promise(function(resolve,reject){
