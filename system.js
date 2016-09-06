@@ -81,12 +81,20 @@ var condition = function(states,actions, path){
 
 	var the_eval = generate_eval_for_condition(states,json);
     var the_actions = get_ordered_actions_from_json_condition(actions,json);
-
+    var parameters_to_actions = json.values;
+    
     this.options = json.options;
     this.is_true = ()=> generate_eval_for_condition(states,json);
     this.actions = the_actions;
 
-    this.execute_actions = ()=>self.actions.forEach((action)=> action.execute());
+    this.execute_actions = ()=>self.actions.forEach((action)=> {
+        var parameter = parameters_to_actions[action.get_name()];
+        if ( parameter!== undefined){
+            action.execute(parameter);
+        }else{
+            action.execute();
+        }
+    });
     this.path = path;
 };
 
@@ -338,7 +346,7 @@ var generate_action_promise = function(the_path, json_value){
     var the_promise = undefined;
     if (is_json){       
         console.log("writing json file");
-        var the_json_value = json_value !== undefined? json_value: "0";
+        var the_json_value = json_value !== undefined? JSON.stringify(json_value): "0";
         
         var command = "echo "+the_json_value+" > "+the_path;
         console.log("calling ", command);
