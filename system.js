@@ -81,7 +81,7 @@ var condition = function(states,actions, path){
 
 	var the_eval = generate_eval_for_condition(states,json);
     var the_actions = get_ordered_actions_from_json_condition(actions,json);
-    var parameters_to_actions = json.values;
+    var parameters_to_actions = json.values === undefined? {} : json.values;
     
     this.options = json.options;
     this.is_true = ()=> generate_eval_for_condition(states,json);
