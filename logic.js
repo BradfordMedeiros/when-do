@@ -115,19 +115,14 @@ logic.remove_condition = function (id){
 
 // @todo need to make sure we keep eval_limit, action_limit counts and don't mess those up
 logic.resume_condition = function(id){
-	console.log('resuming '+id)
-
-	var conditions_to_remove = this.conditions.filter(condition => condition.handle_id === id);
-	
-	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle))
-	conditions.to_remove.forEach(condition=> condition.state = 'stopped');
+	throw (new Error("function not yet implemented"));
 };
 
 logic.pause_condition = function(id){
 	console.log('pausing '+id)
 	var conditions_to_pause= this.conditions.filter(condition => condition.handle_id === id);
-	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle))
-	conditions.to_remove.forEach(condition=> condition.state = 'paused');
+	conditions_to_pause.forEach(condition=> clearInterval(condition.interval_handle))
+	conditions_to_pause.forEach(condition=> condition.state = 'paused');
 };
 
 logic.get_state = function(id){
