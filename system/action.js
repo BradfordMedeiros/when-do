@@ -55,7 +55,7 @@ function is_identifier(path_to_file,type){
 
 };
 
-
+// promise that executes action and resolves when complete
 var generate_action_promise = function(the_path, json_value){
     var parts = the_path.split(".");
     var is_json = parts[parts.length-1] === "json";

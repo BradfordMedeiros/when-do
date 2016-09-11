@@ -16,7 +16,7 @@ var path = require("path");
 var APP_FOLDER = path.resolve("../../run/mock/");
 
 var logic = require("../logic.js");
-var load_system = require("../system.js");
+var load_system = require("../system/system.js");
 
 var the_system = undefined;
 
