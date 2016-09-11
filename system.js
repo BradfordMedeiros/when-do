@@ -302,11 +302,18 @@ var generate_state_promise = function(the_path){
     if (is_json){
         the_promise = new Promise(function(resolve,reject){
             fse.readFile(the_path, "utf-8", (error, value)=>{
-                if (error){
-                    reject(error);
-                }else{
-                    resolve(JSON.parse(value));
+            
+                try{
+                    value = JSON.parse(value);
+                    if (error){
+                        reject(error);
+                    }else{
+                        resolve(JSON.parse(value));
+                    }
+                }catch(e){
+                    reject(e)
                 }
+
             });
         });
     }else{
@@ -344,10 +351,11 @@ var generate_action_promise = function(the_path, json_value){
     var is_json = parts[parts.length-1] === "json";
     
     var the_promise = undefined;
+
     if (is_json){       
         console.log("writing json file");
+            
         var the_json_value = json_value !== undefined? JSON.stringify(json_value): "0";
-        
         var command = "echo "+the_json_value+" > "+the_path;
         console.log("calling ", command);
         // this should be changed eventually but should be fine for now
@@ -361,7 +369,11 @@ var generate_action_promise = function(the_path, json_value){
         });
     }else{
         the_promise = new Promise(function(resolve,reject){
-			child_process.execFile(the_path,
+        
+            var parameter = json_value === undefined? '': JSON.stringify(json_value);
+            var command = the_path + ' ' + parameter;
+			child_process.exec(
+            command,
             {cwd:the_path+'/..'},
             (err,stdout,stderr)=>{
 

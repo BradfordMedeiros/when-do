@@ -129,10 +129,9 @@ sequencer.prototype.run = function(){
     if (the_resolve === undefined || the_reject === undefined){
         throw (new Error("this should never happen-- only in here for testing, i don't think this code works like this will research but putting here in case this happens"));
     }
-	//var last_promise = undefined;
-	//last_promise = create_promise(this.the_events[0]);
+
 	attach_promise(new Promise(function(resolve,reject){resolve()}), 0,this.the_events,the_resolve,the_reject);	
-	//this.the_events = [ ]; // i think this could cause issues 
     return sequence_promise;
 };
+
 module.exports = sequencer;
