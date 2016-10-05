@@ -126,7 +126,7 @@ var load_sequence_path = function(sys_sequence_folder, actions ,sequencer){
         fse.walk(sys_sequence_folder).on('data',(file)=>{            
             if (sequence.is_sequence(file.path)){
                 console.log('added sequence:  '+file.path);
-                sequences.push(new sequence(file.path,sequencer));
+                sequences.push(new sequence(file.path,actions,sequencer));
             }
         }).on('end',()=>{
             console.log('done adding sequences');
@@ -158,5 +158,5 @@ function is_identifier(path_to_file,type){
 
 };
 
-module.exports = sequence;
-//module.exports = load_sequence_path;
+//module.exports = sequence;
+module.exports = load_sequence_path;
