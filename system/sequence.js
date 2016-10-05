@@ -12,8 +12,8 @@ var sequence = function(the_path, actions, sequencer){
     if(actions === undefined){
         throw (new Error("actions undefined in call to sequence"));
     }
-    if(sequencer === undefined){
-        throw (new Error("sequencer undefined in call to sequence"));
+    if(sequencer === undefined || typeof(sequencer) !== 'function'){
+        throw (new Error("sequencer function undefined or not defined as a function in call to sequence"));
     }
  
     var self = this;
@@ -38,7 +38,11 @@ var generate_sequence_promise = function(sequence_path, system_actions, sequence
     
     var the_sequence_promise = new Promise((resolve,reject)=>{
         var seq = new sequencer();
+        
+        console.log("sequence actions length ",sequence_actions.length);
         for (var i = 0 ; i < sequence_actions.length ; i++){
+            console.log('adding action ',i, sequence_actions[i]);
+            
             add_sequence_step(seq, sequence_actions[i], system_actions);
         }
         seq.run().then((status)=>resolve(status)).catch((status)=>reject(status));
@@ -52,15 +56,18 @@ var add_sequence_step = function(sequencer, action, system_actions){
         'action': add_action_step
     };
     
-    var action = the_action_map[action.name];
-    if (action === undefined){
+    var add_step = the_action_map[action.name];
+    if (add_step === undefined){
         throw (new Error("unsupported action type : ", action.name));
     }else{
-        action(sequencer, action, system_actions);
+        add_step(sequencer, action, system_actions);     
     }
 };
 
 var add_wait_step = function(sequencer, action){
+
+    console.log('add wait step');
+    console.log(action);
     if (action.value === undefined){
         throw (new Error("no value wait defined"));
     }else{
@@ -71,10 +78,12 @@ var add_wait_step = function(sequencer, action){
 
 var add_action_step = function(sequencer, action, system_actions){
 
+    console.log('add action step');
+    
     // get the individual system action that matches the json action
-    var matching_actions  = system_actions.filter (action=> action.get_name() === action.value);
+    var matching_actions  = system_actions.filter (the_action=> the_action.get_name() === action.value);
     if (matching_actions.length !== 1){
-        throw (new Error("illegal number ofmatching action to ",action.get_name()), "actual: ",matching_actions.length);
+        throw (new Error("illegal number of matching action to ",action.get_name()), "actual: ",matching_actions.length);
     }
     var the_system_action = matching_actions[0];
     
@@ -82,13 +91,15 @@ var add_action_step = function(sequencer, action, system_actions){
     // parse the options 
     var has_options = action.options !== undefined;
 
-    var loop = 1;
+    var number_of_times_to_loop = 1;
     var delay = undefined;
     if (has_options){
-        loop = action.options.loop !== undefined? parseInt(action.options.loop) :1;
+        number_of_times_to_loop = action.options.loop !== undefined? parseInt(action.options.loop) :1;
         delay = action.options.delay 
         
-        if (Number.isNaN(loop) || Number.isNan(delay)){
+        console.log("loop is ", number_of_times_to_loop);
+        console.log("delay is ", delay);
+        if (Number.isNaN(number_of_times_to_loop) || Number.isNaN(delay)){
             throw (new Error("options for action ",action.get_name(), " are invalid"));
         }   
     }
