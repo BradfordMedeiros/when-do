@@ -1,0 +1,23 @@
+{
+  "name": "when_do",
+  "version": "1.0.0",
+  "description": "main system and logic engine for automate",
+  "main": "handle.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BradfordMedeiros/when-do.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BradfordMedeiros/when-do/issues"
+  },
+  "homepage": "https://github.com/BradfordMedeiros/when-do#readme"
+}
