@@ -114,6 +114,27 @@ var add_action_step = function(sequencer, action, system_actions){
     }
 };
 
+sequence.is_sequence = function(sequence_path){
+    return is_identifier(sequence_path,'sequence');
+};
+
+function is_identifier(path_to_file,type){
+    if (type !== 'action' && type!== 'state' && type!=='condition' && type!=='sequence'){
+        throw (new Error("Type: "+type+" is an invalid identifier"));
+    }
+    var the_file = path.basename(path_to_file);
+    var state = the_file.split('.');
+    
+    return (
+        (the_file[0] !== '.') && 
+        (the_file[the_file.length-1] !== '.') && 
+        state[state.length-2] === type && 
+        state.length-2 >0
+        );
+
+};
+
+
 var load_sequence_path = function(sys_sequence_folder, actions ,sequencer){
 
     if (sys_sequence_folder === undefined || sequencer === undefined){
@@ -137,26 +158,4 @@ var load_sequence_path = function(sys_sequence_folder, actions ,sequencer){
 
 };
 
-
-sequence.is_sequence = function(sequence_path){
-    return is_identifier(sequence_path,'sequence');
-};
-
-function is_identifier(path_to_file,type){
-    if (type !== 'action' && type!== 'state' && type!=='condition' && type!=='sequence'){
-        throw (new Error("Type: "+type+" is an invalid identifier"));
-    }
-    var the_file = path.basename(path_to_file);
-    var state = the_file.split('.');
-    
-    return (
-        (the_file[0] !== '.') && 
-        (the_file[the_file.length-1] !== '.') && 
-        state[state.length-2] === type && 
-        state.length-2 >0
-        );
-
-};
-
-//module.exports = sequence;
 module.exports = load_sequence_path;

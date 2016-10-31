@@ -3,18 +3,20 @@
 var child_process = require("child_process");
 var path = require("path");
 var fse = require("fs-extra");
-
+var sequencer = require("../sequencer.js");
 
 var load_actions_path = require("./action.js");
 var load_states_path = require("./state.js");
 var load_conditions_path = require("./condition.js");
+var load_sequences_path = require("./sequence.js");
 
 
-var system = function(actions,states,conditions){
+var system = function(actions,states,conditions, sequences){
 	
 	this.actions = actions;    // path of various actions available
 	this.states = states;
 	this.conditions = conditions; // path of various conditions available
+    this.sequences = sequences;
 };
 
 // generates a system based upon the path to the root folder
@@ -37,7 +39,7 @@ var load_system_from_path = function(sys_when_do_root_folder){
 
     var states = load_states_path (path.resolve(sys_when_do_root_folder,'states'));
 	states.then((s)=> the_system.states = s);
-
+    
     // we need to load states and actions before we can load conditions since conditions 
     // are directly dependent on states and actions
     Promise.all([actions,states]).then(()=>{
@@ -48,8 +50,19 @@ var load_system_from_path = function(sys_when_do_root_folder){
 
         conditions.then((c)=>{
             the_system.conditions = c
-            resolver(the_system);
+         
         }).catch(rejector);
+        
+        var sequences = load_sequences_path(
+           path.resolve(sys_when_do_root_folder, "sequences"),
+           the_system.actions,
+           sequencer);
+           
+        sequences.then((s)=>{
+            the_system.sequences = s;
+        }).catch(rejector);
+        
+        Promise.all([conditions, sequences]).then(()=>resolver(the_system));
     });
     return system_loaded_promise;
 };
