@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "(cd app & node app1.js)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/BradfordMedeiros/when-do/issues"
   },
-  "homepage": "https://github.com/BradfordMedeiros/when-do#readme"
+  "homepage": "https://github.com/BradfordMedeiros/when-do#readme",
+  "dependencies": {
+    "fs-extra": "^0.30.0"
+  }
 }
