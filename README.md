@@ -14,7 +14,7 @@ and in code:
 </code>we may also modify the above as:<code><pre>...do(turn_on_heater, options)</pre>
 </code>where options may optionally specify any of the below:
 <code><pre>options = 
-```{
+```javascript {
   rate: <value>, // specifies the interval in ms that the evaluator function should be called. 
                 // When the evaluator returns true, we will call the action function
   eval_limit: <value>, // the number of times to evaluate the function 
