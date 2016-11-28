@@ -14,13 +14,14 @@ and in code:
 </code>we may also modify the above as:<code><pre>...do(turn_on_heater, options)</pre>
 </code>where options may optionally specify any of the below:
 <code><pre>options = 
-```javascript {
+```javascript
   rate: <value>, // specifies the interval in ms that the evaluator function should be called. 
                 // When the evaluator returns true, we will call the action function
   eval_limit: <value>, // the number of times to evaluate the function 
   action_limit: <value> // the number of times to perform the action, for example we may set it to 1 so the action only occurs once
   
-}```</pre></code>
+```
+</pre></code>
 additionally, we may do the following operations:
 <code><pre>handle = logic.when(eval).do(action)
 handle.stop() // removes the condition.  When a handle is stopped you must create a new one.  It is now invalid.
