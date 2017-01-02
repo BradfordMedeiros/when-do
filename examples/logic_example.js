@@ -10,10 +10,10 @@ var logic = require("../logic.js");
 // we monitor at 1/sec at default rate and the data count is incrementing 10x/sec
 function basic_monitor(){   
     // Create data with count value that increases over time
-    var data = { count : 0 }
-    var data_handle = setInterval(function(){
-        data.count ++;
-    },100);
+	var data = { count : 0 };
+	var data_handle = setInterval(function(){
+		data.count ++;
+	},100);
 
     // This creates a monitor that watches when the count goes over 50
     // It then calls the do function and stops the handle
@@ -23,18 +23,18 @@ function basic_monitor(){
     // to create an interval via setInterval
 
     // Basic usage:
-    var the_handle0 = logic.when(data,function(data){
+	var the_handle0 = logic.when(data,function(data){
         // be aware that data is the actual reference to data so any side effects done here will effect the object.  
-        return data.count > 50; // return true or false
-    }).do(function(data){
-        console.log("value is : ",data.count);
-        the_handle0.stop();  // this will permanently stop the handle from being evaluated.  May not be resumed
-        clearInterval(data_handle);
+		return data.count > 50; // return true or false
+	}).do(function(data){
+		console.log("value is : ",data.count);
+		the_handle0.stop();  // this will permanently stop the handle from being evaluated.  May not be resumed
+		clearInterval(data_handle);
     
         // all handle methods: stop, pause, resume, get_state
         // pause may be resumed via resume
         // states- 'active', 'paused', 'stopped'
-    });
+	});
 }
 
 
@@ -55,35 +55,35 @@ function basic_monitor(){
 */
 function monitor_with_options1(){
     
-    var count = 0;  
-    var options = { // will only be evaluated every 100 ms
-        rate: 100,
+	var count = 0;  
+	var options = { // will only be evaluated every 100 ms
+		rate: 100,
         
-    };
+	};
     
-    var handle = logic.when({}, function(){
-        count ++;
-        console.log('evaluating');
-        return count > 20;
-    }).do(function(){ handle.stop();},options);
+	var handle = logic.when({}, function(){
+		count ++;
+		console.log("evaluating");
+		return count > 20;
+	}).do(function(){ handle.stop();},options);
 
 }
 
 function monitor_with_options2(){
     
-    var count = 0;  
-    var options = { // will only be evaluated every 100 ms
-        rate: 100,
-        action_limit:1 // this will effectively call handle.stop()
+	var count = 0;  
+	var options = { // will only be evaluated every 100 ms
+		rate: 100,
+		action_limit:1 // this will effectively call handle.stop()
                         // truth and the do function is called
                         // equivalent to 1 w/o the extra code       
-    };
+	};
     
-    var handle = logic.when({}, function(){
-        count ++;
-        console.log('evaluating');
-        return count > 20;
-    }).do(function(){ },options);
+	var handle = logic.when({}, function(){
+		count ++;
+		console.log("evaluating");
+		return count > 20;
+	}).do(function(){ },options);
 
 }
 

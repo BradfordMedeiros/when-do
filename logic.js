@@ -1,28 +1,28 @@
 
-var handle = require('./handle.js');
+var handle = require("./handle.js");
 
-var handle_count = 0
+var handle_count = 0;
 
 var logic = {
-	type : 'logic',
-    conditions : [ ],
+	type : "logic",
+	conditions : [ ],
     
-    when: function(data, evaluator){
-        if (typeof (evaluator) !== typeof(function(){})){
-            throw (new Error('evaluator must be defined as a function'));
-        }
-    	this.type = 'when';
-        return new execute(data,evaluator)
-    }
+	when: function(data, evaluator){
+		if (typeof (evaluator) !== typeof(function(){})){
+			throw (new Error("evaluator must be defined as a function"));
+		}
+    	this.type = "when";
+		return new execute(data,evaluator);
+	}
 };
 
 function execute(data, evaluator){
 	this.data = data;
 	this.evaluator = evaluator;
-	this.type = 'do';
-};
+	this.type = "do";
+}
 execute.prototype.do = function(action,options){
-	var that = this
+	var that = this;
 	
 	var rate = 1000;
 	if (options !== undefined && options.rate !== undefined){
@@ -49,7 +49,7 @@ execute.prototype.do = function(action,options){
 		eval_limit : eval_limit,
 		rate: rate, 
 		state: undefined,
-        value: undefined
+		value: undefined
 	};
 
 	start_condition(condition);
@@ -58,7 +58,7 @@ execute.prototype.do = function(action,options){
 
 function start_condition(condition){
 	
-    handle_count++;
+	handle_count++;
 	
 	var times_eval_called = 0;
 	var times_action_called = 0;
@@ -79,8 +79,8 @@ function start_condition(condition){
 						condition.action(condition.data);
 					}
 				}).catch(()=>{
-                    console.log("unexpected error");
-                });
+					console.log("unexpected error");
+				});
 			}else{
 				// else it's a function
 				condition.value = condition_eval;
@@ -91,25 +91,25 @@ function start_condition(condition){
 			}
 		}else{
 			clearInterval(the_handle);
-            logic.remove_condition(condition.handle_id);
+			logic.remove_condition(condition.handle_id);
 		}	
 	},condition.rate);
 	
-	condition.state = 'active';
+	condition.state = "active";
 	condition.interval_handle = the_handle;	
 	logic.conditions.push(condition);
 	return the_handle;
-};
+}
 
 
 logic.remove_condition = function (id){
-	console.log('removing '+id);
+	console.log("removing "+id);
 	var conditions_to_remove = this.conditions.filter((condition) => condition.handle_id === id);
 
 	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle));
-	conditions_to_remove.forEach(condition=> condition.state = 'stopped');
+	conditions_to_remove.forEach(condition=> condition.state = "stopped");
 	
-	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id)
+	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id);
 	
 };
 
@@ -119,16 +119,16 @@ logic.resume_condition = function(id){
 };
 
 logic.pause_condition = function(id){
-	console.log('pausing '+id)
+	console.log("pausing "+id);
 	var conditions_to_pause= this.conditions.filter(condition => condition.handle_id === id);
-	conditions_to_pause.forEach(condition=> clearInterval(condition.interval_handle))
-	conditions_to_pause.forEach(condition=> condition.state = 'paused');
+	conditions_to_pause.forEach(condition=> clearInterval(condition.interval_handle));
+	conditions_to_pause.forEach(condition=> condition.state = "paused");
 };
 
 logic.get_state = function(id){
 	var conditions = logic.conditions.filter(condition=> condition.handle_id == id).map(condition => condition.state);
     
-    if (conditions.length > 1){
+	if (conditions.length > 1){
 		throw (new Error("logical error, you probably mutated the private state, don't do that"));
 	}
 	return conditions.length == 1? conditions[0]: null;

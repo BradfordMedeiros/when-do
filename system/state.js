@@ -15,32 +15,32 @@ var state = function (the_path){
 	// returns a promise
 	this.get_state = ()=> generate_state_promise(self.path);
 
-    this.get_name = function(state_name){
+	this.get_name = function(state_name){
         // we consider the name the filename but not including the extension (.state.*)
-        var base_name = path.basename(this.path);
-        return base_name.slice(0,base_name.lastIndexOf('.state.')); 
-    };
+		var base_name = path.basename(this.path);
+		return base_name.slice(0,base_name.lastIndexOf(".state.")); 
+	};
 };
 
 state.is_state = function(state_path){
-    return is_identifier(state_path,'state');
+	return is_identifier(state_path,"state");
 };
 
 function is_identifier(path_to_file,type){
-    if (type !== 'action' && type!== 'state' && type!=='condition'){
-        throw (new Error("Type: "+type+" is an invalid identifier"));
-    }
-    var the_file = path.basename(path_to_file);
-    var state = the_file.split('.');
+	if (type !== "action" && type!== "state" && type!=="condition"){
+		throw (new Error("Type: "+type+" is an invalid identifier"));
+	}
+	var the_file = path.basename(path_to_file);
+	var state = the_file.split(".");
     
-    return (
-        (the_file[0] !== '.') && 
-        (the_file[the_file.length-1] !== '.') && 
+	return (
+        (the_file[0] !== ".") && 
+        (the_file[the_file.length-1] !== ".") && 
         state[state.length-2] === type && 
         state.length-2 >0
-        );
+	);
 
-};
+}
 
 
 
@@ -49,53 +49,53 @@ function is_identifier(path_to_file,type){
 // Expects contents to be json file
 var generate_state_promise = function(the_path){
    
-    var parts = the_path.split(".");
-    var is_json = parts[parts.length-1] === "json";
+	var parts = the_path.split(".");
+	var is_json = parts[parts.length-1] === "json";
     
-    var the_promise = undefined;
-    if (is_json){
-        the_promise = new Promise(function(resolve,reject){
-            fse.readFile(the_path, "utf-8", (error, value)=>{
+	var the_promise = undefined;
+	if (is_json){
+		the_promise = new Promise(function(resolve,reject){
+			fse.readFile(the_path, "utf-8", (error, value)=>{
             
-                try{
-                    value = JSON.parse(value);
-                    if (error){
-                        reject(error);
-                    }else{
-                        resolve(JSON.parse(value));
-                    }
-                }catch(e){
-                    reject(e)
-                }
+				try{
+					value = JSON.parse(value);
+					if (error){
+						reject(error);
+					}else{
+						resolve(JSON.parse(value));
+					}
+				}catch(e){
+					reject(e);
+				}
 
-            });
-        });
-    }else{
-        the_promise = new Promise(function(resolve,reject){
-			child_process.execFile(the_path,
-            {cwd:the_path+'/..'},
-            (err,stdout,stderr)=>{
-
-				var is_error = false;
-                try{
-                    var json_result = JSON.parse(stdout);
-                   
-                }catch(e){
-                    is_error = true;
-                }
-				if (err !== null && !is_error){
-                    //console.log("Finished executing state success ",the_path);
-					resolve(json_result)
-                }else{
-                    console.log("Error executing state success ",the_path);
-                    console.log("expected json got ",stdout);
-					reject(stderr);
-
-                }
 			});
 		});
-    }
-    return the_promise;
+	}else{
+		the_promise = new Promise(function(resolve,reject){
+			child_process.execFile(the_path,
+            {cwd:the_path+"/.."},
+            (err,stdout,stderr)=>{
+
+	var is_error = false;
+	try{
+		var json_result = JSON.parse(stdout);
+                   
+	}catch(e){
+		is_error = true;
+	}
+	if (err !== null && !is_error){
+                    //console.log("Finished executing state success ",the_path);
+		resolve(json_result);
+	}else{
+		console.log("Error executing state success ",the_path);
+		console.log("expected json got ",stdout);
+		reject(stderr);
+
+	}
+});
+		});
+	}
+	return the_promise;
 
 };
 
@@ -103,16 +103,16 @@ var generate_state_promise = function(the_path){
 var load_states_path = function(sys_condition_folder){
 	var states = [ ];
     
-    var promise = new Promise(function(resolve,reject){
-        fse.walk(sys_condition_folder).on('data',(file)=>{            
-            if (state.is_state(file.path)){
-                console.log('added state:  '+file.path);
-                states.push(new state(file.path));
-            }
-        }).on('end',()=>{
-            resolve(states);
-        });
-    });
+	var promise = new Promise(function(resolve,reject){
+		fse.walk(sys_condition_folder).on("data",(file)=>{            
+			if (state.is_state(file.path)){
+				console.log("added state:  "+file.path);
+				states.push(new state(file.path));
+			}
+		}).on("end",()=>{
+			resolve(states);
+		});
+	});
 	return promise;
 };
 

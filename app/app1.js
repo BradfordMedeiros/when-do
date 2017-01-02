@@ -22,15 +22,15 @@ var the_system = undefined;
 
 console.log("loading system from ",APP_FOLDER );
 load_system(APP_FOLDER).then((system)=>{
-    the_system = system;
+	the_system = system;
 
     // starts evaluating the conditions and calling them when they become true
-    the_system.conditions.forEach(condition=>{
-        console.log("adding condition");
-        logic.when({},condition.is_true).do((x)=>{
-            console.log("executing condition");
-            condition.execute_actions(x);
-        });
-    });
+	the_system.conditions.forEach(condition=>{
+		console.log("adding condition");
+		logic.when({},condition.is_true).do((x)=>{
+			console.log("executing condition");
+			condition.execute_actions(x);
+		});
+	});
 });
 

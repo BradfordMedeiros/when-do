@@ -21,16 +21,16 @@ var load_system = require("../system/system.js");
 var the_system = undefined;
 
 load_system(APP_FOLDER).then((system)=>{
-    the_system = system;
+	the_system = system;
 
     // starts evaluating the conditions and calling them when they become true
-    the_system.conditions.forEach(condition=>{
-        console.log("Adding condition :"+condition.path);
-        logic.when({},condition.is_true).do((x)=>{
-            console.log("-----------------------");
-            condition.execute_actions(x);
-        });
-    });
+	the_system.conditions.forEach(condition=>{
+		console.log("Adding condition :"+condition.path);
+		logic.when({},condition.is_true).do((x)=>{
+			console.log("-----------------------");
+			condition.execute_actions(x);
+		});
+	});
 });
 
 
