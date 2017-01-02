@@ -2,7 +2,7 @@
   "name": "when_do",
   "version": "1.0.0",
   "description": "main system and logic engine for automate",
-  "main": "handle.js",
+  "main": "./system/system.js",
   "directories": {
     "example": "examples",
     "test": "tests"
