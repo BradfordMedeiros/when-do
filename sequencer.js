@@ -121,4 +121,4 @@ sequencer.prototype.run = function(){
 	return sequence_promise;
 };
 
-module.exports = sequencer;
+module.exports = () => new sequencer;

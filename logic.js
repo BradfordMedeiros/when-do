@@ -11,7 +11,7 @@ var logic = {
 		if (typeof (evaluator) !== typeof(function(){})){
 			throw (new Error("evaluator must be defined as a function"));
 		}
-    	this.type = "when";
+		this.type = "when";
 		return new execute(data,evaluator);
 	}
 };
@@ -53,6 +53,7 @@ execute.prototype.do = function(action,options){
 	};
 
 	start_condition(condition);
+	logic.conditions.push(condition);
 	return new handle(logic, condition.handle_id);
 };
 
@@ -97,7 +98,6 @@ function start_condition(condition){
 	
 	condition.state = "active";
 	condition.interval_handle = the_handle;	
-	logic.conditions.push(condition);
 	return the_handle;
 }
 
@@ -108,20 +108,30 @@ logic.remove_condition = function (id){
 
 	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle));
 	conditions_to_remove.forEach(condition=> condition.state = "stopped");
-	
 	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id);
 	
 };
 
 // @todo need to make sure we keep eval_limit, action_limit counts and don't mess those up
 logic.resume_condition = function(id){
-	throw (new Error("function not yet implemented"));
+	const conditions_to_resume = this.conditions.filter(condition => condition.handle_id === id);
+	conditions_to_resume.forEach(condition => {
+		if (condition.state !== "paused") {
+    	throw (new Error("cannot resume a condition that is not paused"));
+		}
+  	start_condition(condition)
+});
+
 };
 
 logic.pause_condition = function(id){
-	console.log("pausing "+id);
 	var conditions_to_pause= this.conditions.filter(condition => condition.handle_id === id);
-	conditions_to_pause.forEach(condition=> clearInterval(condition.interval_handle));
+	conditions_to_pause.forEach(condition=> {
+		  if (condition.state !== "active") {
+		  	throw (new Error("cannot pause a condition that is not active"));
+		  }
+    	clearInterval(condition.interval_handle);
+  });
 	conditions_to_pause.forEach(condition=> condition.state = "paused");
 };
 
