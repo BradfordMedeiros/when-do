@@ -74,12 +74,22 @@ function attach_promise ( promise, index, events, resolve, reject){
 
 
 //if func returns a promise, we wait for that promise to be satisfied before moving on
-sequencer.prototype.then = function(func){
+sequencer.prototype.then = function(func, times, delay_in_ms){
 	if (typeof(func) !== typeof(func)){
 		throw (new Error("func in then must be function, provided: ",typeof(func)));
 	}
-	this.the_events.push(new event(func,"then"));
-	return this;
+
+	const timesToExecute = times === undefined ? 1: times;
+
+	var i = 0;
+	for ( ; i < times - 1; i++){
+    this.the_events.push(new event(func,"then"));
+    if (delay_in_ms !== undefined){
+      this.the_events.push(new event(delay_in_ms, "wait"));
+    }
+  }
+  this.the_events.push(new event(func,"then"));
+  return this;
 };
 
 sequencer.prototype.wait = function(time){
@@ -87,29 +97,6 @@ sequencer.prototype.wait = function(time){
 		throw (new Error("time in wait must be of type number, provided type ",typeof(time)));
 	}
 	this.the_events.push(new event(time,"wait"));
-	return this;
-};
-
-sequencer.prototype.loop = function(func, times, delay_in_ms){
-
-	if (typeof(func) !== typeof(func)){
-		throw (new Error("func in loop must be function, provided: ",typeof(func)));
-	}
-	
-	if (typeof(times) !== typeof(1)){
-		throw (new Error("func in loop must be number, provided: ",typeof(times)));
-	}
-	
-	if (delay_in_ms !== undefined && (typeof(delay_in_ms) !== typeof(1))){
-		throw (new Error("delay_in_ms in loop must be number if it is passed as parameter(optiona parameter), provided: ",typeof(times)));
-	}
-	
-	for (var i = 0 ; i < times; i++){
-		this.the_events.push(new event(func,"then"));
-		if (delay_in_ms !== undefined){
-			this.the_events.push(new event(delay_in_ms, "wait"));
-		}
-	}
 	return this;
 };
 
