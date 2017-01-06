@@ -6,7 +6,7 @@ var fse = require("fs-extra");
 var action = function (the_path){
 	this.path = path.resolve(the_path);
 	// returns a promise
-	this.execute = (value)=>generate_action_promise(the_path,value);
+	this.execute = value => generate_action_promise(the_path,value);
     
 	this.get_name = function(){
         // we consider the name the filename but not including the extension (.action.*)
@@ -79,13 +79,17 @@ var generate_action_promise = function(the_path, json_value){
         
 			var parameter = json_value === undefined? "": JSON.stringify(json_value);
 			var command = the_path + " " + parameter;
+
+			console.log('the path ',the_path);
+			console.log('command ', command);
 			child_process.exec(
             command,
-            {cwd:the_path+"/.."},
+            {cwd: path.resolve(the_path, "..")},
             (err,stdout,stderr)=>{
 
 	var is_error = false;
 	try{
+		console.log("std out ",stdout);
 		var json_result = JSON.parse(stdout);
                    
 	}catch(e){

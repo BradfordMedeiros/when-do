@@ -73,7 +73,7 @@ var generate_state_promise = function(the_path){
 	}else{
 		the_promise = new Promise(function(resolve,reject){
 			child_process.execFile(the_path,
-            {cwd:the_path+"/.."},
+        		{cwd: path.resolve(the_path, "..")},
             (err,stdout,stderr)=>{
 
 	var is_error = false;
