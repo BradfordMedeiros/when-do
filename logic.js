@@ -1,7 +1,5 @@
-
-var handle = require("./handle.js");
-
-var handle_count = 0;
+let handle = require("./handle.js");
+let handle_count = 0;
 
 var logic = {
 	type : "logic",
@@ -61,10 +59,10 @@ function start_condition(condition){
 	
 	handle_count++;
 	
-	var times_eval_called = 0;
-	var times_action_called = 0;
+	let times_eval_called = 0;
+	let times_action_called = 0;
 	
-	var the_handle = setInterval(function(){
+	let the_handle = setInterval(function(){
 
 		if (times_eval_called < condition.eval_limit && times_action_called < condition.action_limit ){
 			times_eval_called++;
@@ -103,13 +101,10 @@ function start_condition(condition){
 
 
 logic.remove_condition = function (id){
-	console.log("removing "+id);
-	var conditions_to_remove = this.conditions.filter((condition) => condition.handle_id === id);
-
-	conditions_to_remove.forEach(condition=> clearInterval(condition.interval_handle));
-	conditions_to_remove.forEach(condition=> condition.state = "stopped");
+	const conditions_to_remove = this.conditions.filter((condition) => condition.handle_id === id);
+	conditions_to_remove.forEach(condition => clearInterval(condition.interval_handle));
+	conditions_to_remove.forEach(condition => condition.state = "stopped");
 	this.conditions = this.conditions.filter(condition=> condition.handle_id !== id);
-	
 };
 
 // @todo need to make sure we keep eval_limit, action_limit counts and don't mess those up
@@ -120,11 +115,10 @@ logic.resume_condition = function(id){
     	throw (new Error("cannot resume a condition that is not paused"));
 		}
   	start_condition(condition)
-});
-
+	});
 };
 
-logic.pause_condition = function(id){
+logic.pause_condition = function(id) {
 	var conditions_to_pause= this.conditions.filter(condition => condition.handle_id === id);
 	conditions_to_pause.forEach(condition=> {
 		  if (condition.state !== "active") {
@@ -135,7 +129,7 @@ logic.pause_condition = function(id){
 	conditions_to_pause.forEach(condition=> condition.state = "paused");
 };
 
-logic.get_state = function(id){
+logic.get_state = function(id) {
 	var conditions = logic.conditions.filter(condition=> condition.handle_id == id).map(condition => condition.state);
     
 	if (conditions.length > 1){
@@ -143,6 +137,5 @@ logic.get_state = function(id){
 	}
 	return conditions.length == 1? conditions[0]: null;
 };
-
 
 module.exports = logic;

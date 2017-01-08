@@ -1,8 +1,8 @@
 
-var child_process = require("child_process");
-var path = require("path");
-var fse = require("fs-extra");
-
+const child_process = require("child_process");
+const path = require("path");
+const fse = require("fs-extra");
+const logic = require("../logic.js");
 
 var condition = function(states,actions, path){
 
@@ -18,8 +18,8 @@ var condition = function(states,actions, path){
 
 	var self = this;
 
-    // do this over require because we want users to be able to reload
-    // and i don't wanna mess around w/ require cache cause that seems bad
+	// do this over require because we want users to be able to reload
+	// and i don't wanna mess around w/ require cache cause that seems bad
 	var json = JSON.parse(fse.readFileSync(path));
 
 	var the_eval = generate_eval_for_condition(states,json);
@@ -27,17 +27,19 @@ var condition = function(states,actions, path){
 	var parameters_to_actions = json.values === undefined? {} : json.values;
     
 	this.options = json.options;
-	this.is_true = ()=> generate_eval_for_condition(states,json);
+	this.is_true = () => generate_eval_for_condition(states,json);
 	this.actions = the_actions;
 
-	this.execute_actions = ()=>self.actions.forEach((action)=> {
-		var parameter = parameters_to_actions[action.get_name()];
+	this.execute_actions = () => self.actions.forEach((action)=> {
+		const parameter = parameters_to_actions[action.get_name()];
 		if ( parameter!== undefined){
 			action.execute(parameter);
 		}else{
 			action.execute();
 		}
 	});
+
+  logic.when({}, this.is_true).do( x => this.execute_actions(x));
 	this.path = path;
 };
 
@@ -58,7 +60,6 @@ function is_identifier(path_to_file,type){
         state[state.length-2] === type && 
         state.length-2 >0
 	);
-
 }
 
 function generate_eval_for_condition(states, json_condition){
@@ -66,18 +67,14 @@ function generate_eval_for_condition(states, json_condition){
 	var ordered_states = get_ordered_states_from_json_condition(states,json_condition);
 	var the_eval = eval(json_condition.eval);
         
-	console.log("gen eval 0");
 	var values = [ ];
 
 	var promises = [ ];
-	ordered_states.forEach(
-        (state,index)=> {
-	var the_promise = state.get_state();
-	promises.push(the_promise);
-	the_promise.then((val)=> values[index] = val);
-}
-    );
-	console.log("finisihed pushing states");
+	ordered_states.forEach((state,index)=> {
+			var the_promise = state.get_state();
+			promises.push(the_promise);
+			the_promise.then((val)=> values[index] = val);
+	});
 
 	var the_resolver = undefined; 
 	var the_rejecter = undefined;
@@ -87,10 +84,8 @@ function generate_eval_for_condition(states, json_condition){
 	});
     
 	var private_promise = Promise.all(promises).then(()=>{
-		console.log("exexuting");
 		try{
 			var result = the_eval.apply(null,values);
-			console.log("val:",values);
 			the_resolver({
 				result: result,
 				values: values
@@ -104,12 +99,7 @@ function generate_eval_for_condition(states, json_condition){
 	}).catch((x)=>{
 		console.log("error :",x);
 	});
-    
-	console.log("generated promise");
- 
 	return public_promise;
-    
-    
 }
 
 // I want to eventually be able to use the whole when_do.js library if appropriate based on this
@@ -160,11 +150,9 @@ var load_conditions_path = function(states, actions, sys_condition_folder){
 	var conditions_promise = new Promise (function(resolve,reject){
 		fse.walk(sys_condition_folder).on("data",(file)=>{
 			if (condition.is_condition(file.path)){
-				console.log("added condition:  "+file.path);
 				conditions.push(new condition(states,actions,file.path));
 			}
 		}).on("end",()=>{
-			console.log("done adding conditions");
 			resolve(conditions);
 		});
 	});
