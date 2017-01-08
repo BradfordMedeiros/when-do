@@ -104,20 +104,16 @@ we may also modify the above as:
 </code>
 additionally, we may do the following operations:
   <code>
-  ```javascript
 
     handle = logic.when(eval).do(action)
-    handle.stop() // removes the condition.  When a handle is stopped you must create a new one.  It is now invalid.
     ```
 
-  </code>
   and the pair:
-  <code>
-    <pre>
+
       handle.pause() // pauses any evaluation of the condition, maintains any state of the eval such as limits
       handle.resume()
-     </pre>
-   </code>
   <hr>
+    </code>
+
      
      
