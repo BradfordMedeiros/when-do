@@ -34,7 +34,34 @@ Examples of states might be: room_temperature, humidity, is_nighttime, etc.
 Examples of actions might be: set_room_temperature, turn_on_humidifier, etc.
 
 <br>
-
+<hr>
+ I recommend taking advantage or the filesystem and other tooling the OS provides with this structure. 
+ For example, by creating folders, we can organize something like:
+ <pre>
+ /states
+  /indoor
+    /room1
+      temp.state.json
+    /room2
+      temp.state.json
+  /outdoor
+      is_dog_in_doghouse.state.exe
+      /treehouse
+        treehouse_temp.state.json
+        treehouse_humidity.state.exe
+ /actions
+  /outdoor
+      /treehouse
+        turn_on_fan.exe
+  /indoor
+    /room1
+      turn_on_fan.exe
+    /room2
+      turn_on_fan.exe
+ </pre>
+ 
+ By organizing your folder structure like this, it provided additional information. Unfortunately at this time I don't support anything to take advantage of this, but I still find it useful for managing my system.
+<br>
 Any state is the state folder must be labeled *.state.*and any action must be named*.state.*. 
 Two formats are supported.  These may either be executable files or json.  If it is json, the state will be read an parsed from the json file directly, and actions will right to this json file directly (you may implement a file watch or pipe to get this value elsewhere to another program).  If it a program, it will run the program, and read from stdin for states, and write via parameters to stdin for actions.   
 
@@ -54,7 +81,7 @@ and in code:
 <code>
   <pre>
   const thermometer_data = { temperature:20 }
-  const handle -= logic.when(thermometer_data, function(data){ return data.temperature < 30}).do(turn_on_heater)
+  const handle = logic.when(thermometer_data, function(data){ return data.temperature < 30}).do(turn_on_heater)
   </pre>
 </code>
 
@@ -76,8 +103,13 @@ we may also modify the above as:
 </pre>
 </code>
 additionally, we may do the following operations:
-  <code>handle = logic.when(eval).do(action)
-        handle.stop() // removes the condition.  When a handle is stopped you must create a new one.  It is now invalid.
+  <code>
+  ```javascript
+
+    handle = logic.when(eval).do(action)
+    handle.stop() // removes the condition.  When a handle is stopped you must create a new one.  It is now invalid.
+    ```
+
   </code>
   and the pair:
   <code>
