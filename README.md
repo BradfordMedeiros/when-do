@@ -1,72 +1,119 @@
 # when-do
+An engine specifically geared to tooling to create smart home-automation.
+Works through file system mounting and configuration, or as node.js libraries.
 
-The idea of this library is to be able to construct extend if statements to a when statement so that we can say things like:
+For example, with smart-home automation, you might want to solve some of the following scenarios:
+<pre>
+1. When it is dark, turn the light on.
+2. When a movie is playing, turn off the lights and then turn on the tv.
+</pre>
+or you might simply want to provide actions for a user to directly use such as :
 
-current support:
+<pre>
+3. turn the light on
+4. turn off the lights, then turn on the tv.
+</pre>
 
-english: when it is cold outside, turn on the heater
+<hr>
+
+To achieve we point it at a folder:
+<pre>
+  /system
+    /states
+    /actions
+    /conditions
+    /sequences
+</pre>
+
+States and actions are the primary folders. States and actions are the fundamental abilities driving everything else we use.
+States and actions describe the state of your smart home system, and actions you might perform respectiviely.  Think of states folder as describing the state of the system , and actions as describing  what your system can do.
+<hr>
+<br>
+Examples of states might be: room_temperature, humidity, is_nighttime, etc.  
+<br>
+Examples of actions might be: set_room_temperature, turn_on_humidifier, etc.
+
+<br>
+<hr>
+ I recommend taking advantage or the filesystem and other tooling the OS provides with this structure. 
+ For example, by creating folders, we can organize something like:
+ <pre>
+ /states
+  /indoor
+    /room1
+      temp.state.json
+    /room2
+      temp.state.json
+  /outdoor
+      is_dog_in_doghouse.state.exe
+      /treehouse
+        treehouse_temp.state.json
+        treehouse_humidity.state.exe
+ /actions
+  /outdoor
+      /treehouse
+        turn_on_fan.exe
+  /indoor
+    /room1
+      turn_on_fan.exe
+    /room2
+      turn_on_fan.exe
+ </pre>
+ 
+ By organizing your folder structure like this, it provided additional information. Unfortunately at this time I don't support anything to take advantage of this, but I still find it useful for managing my system.
+<br>
+Any state is the state folder must be labeled *.state.*and any action must be named*.state.*. 
+Two formats are supported.  These may either be executable files or json.  If it is json, the state will be read an parsed from the json file directly, and actions will right to this json file directly (you may implement a file watch or pipe to get this value elsewhere to another program).  If it a program, it will run the program, and read from stdin for states, and write via parameters to stdin for actions.   
+
+<br> * Note that when conditions are evaluated, they do so in a loop based upon the condition configuration.  Just be aware that these programs/files may be read quite often (1000 ms default evaluation for the loop).  These programs should be short quick programs. 
+
+<hr>
+Sequences are effectively like actions, but are specified as a json file which combined the actions in a certain order.   They support looping actions, and delays.  
+<br>
+Conditions are specified as json, and specify that an action should be performed when a certain evaluation is true.  I allow the use to write a javascript snippet that will be evaluated in the json. The state you wish to monitor may be passed in and the action will then be performed when that is true. 
+<br>
+And example configuration is provided in the mock folder.  That is probably the easiest way to learn what I am trying describe in this hastily written read-me.
+
+I also provide support to the underlying logic (condition) engine, and the sequencer:
+
+
 and in code:
 <code>
   <pre>
-  thermometer_data = { temperature:20 }
-  logic.when(thermometer_data, function(data){ return data.temperature < 30}).do(turn_on_heater)
+  const thermometer_data = { temperature:20 }
+  const handle = logic.when(thermometer_data, function(data){ return data.temperature < 30}).do(turn_on_heater)
   </pre>
-</code>we may also modify the above as:<code><pre>...do(turn_on_heater, options)</pre>
+</code>
+
+we may also modify the above as:
+<code>
+  <pre>...do(turn_on_heater, options)</pre>
 </code>where options may optionally specify any of the below:
-<code><pre>options = 
+<code>
+  <pre>
+  options = 
 ```javascript
+  
   rate: <value>, // specifies the interval in ms that the evaluator function should be called. 
                 // When the evaluator returns true, we will call the action function
   eval_limit: <value>, // the number of times to evaluate the function 
   action_limit: <value> // the number of times to perform the action, for example we may set it to 1 so the action only occurs once
-  
+    
 ```
-</pre></code>
-additionally, we may do the following operations:
-<code><pre>handle = logic.when(eval).do(action)
-handle.stop() // removes the condition.  When a handle is stopped you must create a new one.  It is now invalid.
 </pre>
-</code>and the pair:
-<code><pre>handle.pause() // pauses any evaluation of the condition, maintains any state of the eval such as limits
-handle.resume()</pre>
 </code>
-<hr>
-Upcoming:
-- Next up is to refactor code because i just hacked it into one file, all unorganized to get it working
+additionally, we may do the following operations:
+  <code>
 
-Upcoming support:
-additional functions:
+    handle = logic.when(eval).do(action)
+    ```
 
-<code>
-logic.when(eval).do_once(action) ==> convenience function which simply passes an options argument with argument 1. This will override                                     any options passed into the function (debating if this is a good idea or not)
-</code>
+  and the pair:
 
-chaining:
-logic.when(eval).do(x).do(y) ==> where if the eval is true is will call all methods after it
+      handle.pause() // pauses any evaluation of the condition, maintains any state of the eval such as limits
+      handle.resume()
+  <hr>
+    </code>
 
-additional logic:
-<code><pre>logic.when(logic.and(eval0,eval1)).do(action) ==> logical and operation
-logic.when(logic.or(eval0,eval1)).do(action) ==> logical or operation</pre>
-</code>
-
-syntax might change but something like:<code>handle = logic.when(eval).do(action)
-logic.when(handle).do(action1)
-</code>
-
-so you can do something like:
-in english: when it's night turn off the lights.  when the lights are turned off, turn on smooth jazz music;
-in code:
-
-<code>night_turn_off_light_handle = logic.when(data,is_night).do(turn_of_lights)
-logic.when(night_turn_off_light_handle).do(play_smooth_jazz);
-</code>>
-
-I also want to be able to do chaining for these.  I am not 100% sure how or conditions should be evaluated for these, considering 
-these get evaluated on different intervals.  I am thinking about a mandatory specifier such as:
-
-<code>
-logic.when(night_turn_off_light_handle).andwithin(play_smooth_jazz,30000).do(action).  We will see.
-</code>
      
      
-also need to figure out this markdown
