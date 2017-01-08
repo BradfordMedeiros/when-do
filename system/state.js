@@ -56,47 +56,40 @@ var generate_state_promise = function(the_path){
 	if (is_json){
 		the_promise = new Promise(function(resolve,reject){
 			fse.readFile(the_path, "utf-8", (error, value)=>{
-            
 				try{
 					value = JSON.parse(value);
 					if (error){
 						reject(error);
 					}else{
-						resolve(JSON.parse(value));
+            resolve(value);
 					}
 				}catch(e){
-					reject(e);
+          reject(e);
 				}
-
 			});
 		});
 	}else{
 		the_promise = new Promise(function(resolve,reject){
 			child_process.execFile(the_path,
-        		{cwd: path.resolve(the_path, "..")},
-            (err,stdout,stderr)=>{
+				{cwd: path.resolve(the_path, "..")},
+				(err,stdout,stderr)=>	{
+					let is_error = false;
+					try{
+						var json_result = JSON.parse(stdout);
 
-	var is_error = false;
-	try{
-		var json_result = JSON.parse(stdout);
-                   
-	}catch(e){
-		is_error = true;
-	}
-	if (err !== null && !is_error){
-                    //console.log("Finished executing state success ",the_path);
-		resolve(json_result);
-	}else{
-		console.log("Error executing state success ",the_path);
-		console.log("expected json got ",stdout);
-		reject(stderr);
+					}catch(e){
+						is_error = true;
+					}
 
-	}
-});
+					if (err !== null && !is_error){
+						resolve(json_result);
+					}else{
+					reject(stderr);
+				}
+			});
 		});
 	}
 	return the_promise;
-
 };
 
 
