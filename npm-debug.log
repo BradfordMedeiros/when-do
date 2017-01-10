@@ -1,0 +1,516 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'fs-extra' ]
+2 info using npm@3.10.10
+3 info using node@v7.2.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData fs-extra
+8 silly fetchNamedPackageData fs-extra
+9 silly mapToRegistry name fs-extra
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'fs-extra',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'fs-extra',
+12 silly mapToRegistry   name: 'fs-extra',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/fs-extra
+14 verbose request uri https://registry.npmjs.org/fs-extra
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 12:36:15 AM
+17 verbose request using bearer token for auth
+18 verbose request id 51e017c5a6713ae3
+19 verbose etag W/"58653157-1e981"
+20 verbose lastModified Thu, 29 Dec 2016 15:52:55 GMT
+21 http request GET https://registry.npmjs.org/fs-extra
+22 http 200 https://registry.npmjs.org/fs-extra
+23 verbose headers { server: 'nginx/1.10.1',
+23 verbose headers   'content-type': 'application/json',
+23 verbose headers   'last-modified': 'Fri, 06 Jan 2017 09:23:44 GMT',
+23 verbose headers   etag: 'W/"586f6220-1e9af"',
+23 verbose headers   'content-encoding': 'gzip',
+23 verbose headers   'cache-control': 'max-age=300',
+23 verbose headers   'transfer-encoding': 'chunked',
+23 verbose headers   'accept-ranges': 'bytes',
+23 verbose headers   date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+23 verbose headers   via: '1.1 varnish',
+23 verbose headers   connection: 'keep-alive',
+23 verbose headers   'x-served-by': 'cache-sea1921-SEA',
+23 verbose headers   'x-cache': 'MISS',
+23 verbose headers   'x-cache-hits': '0',
+23 verbose headers   'x-timer': 'S1483864575.318220,VS0,VE19',
+23 verbose headers   vary: 'Accept-Encoding' }
+24 silly get cb [ 200,
+24 silly get   { server: 'nginx/1.10.1',
+24 silly get     'content-type': 'application/json',
+24 silly get     'last-modified': 'Fri, 06 Jan 2017 09:23:44 GMT',
+24 silly get     etag: 'W/"586f6220-1e9af"',
+24 silly get     'content-encoding': 'gzip',
+24 silly get     'cache-control': 'max-age=300',
+24 silly get     'transfer-encoding': 'chunked',
+24 silly get     'accept-ranges': 'bytes',
+24 silly get     date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+24 silly get     via: '1.1 varnish',
+24 silly get     connection: 'keep-alive',
+24 silly get     'x-served-by': 'cache-sea1921-SEA',
+24 silly get     'x-cache': 'MISS',
+24 silly get     'x-cache-hits': '0',
+24 silly get     'x-timer': 'S1483864575.318220,VS0,VE19',
+24 silly get     vary: 'Accept-Encoding' } ]
+25 verbose get saving fs-extra to /home/brad/.npm/registry.npmjs.org/fs-extra/.cache.json
+26 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly resolveWithNewModule fs-extra@1.0.0 checking installable status
+40 silly cache add args [ 'fs-extra', null ]
+41 verbose cache add spec fs-extra
+42 silly cache add parsed spec Result {
+42 silly cache add   raw: 'fs-extra',
+42 silly cache add   scope: null,
+42 silly cache add   escapedName: 'fs-extra',
+42 silly cache add   name: 'fs-extra',
+42 silly cache add   rawSpec: '',
+42 silly cache add   spec: 'latest',
+42 silly cache add   type: 'tag' }
+43 silly addNamed fs-extra@latest
+44 verbose addNamed "latest" is being treated as a dist-tag for fs-extra
+45 info addNameTag [ 'fs-extra', 'latest' ]
+46 silly mapToRegistry name fs-extra
+47 silly mapToRegistry using default registry
+48 silly mapToRegistry registry https://registry.npmjs.org/
+49 silly mapToRegistry data Result {
+49 silly mapToRegistry   raw: 'fs-extra',
+49 silly mapToRegistry   scope: null,
+49 silly mapToRegistry   escapedName: 'fs-extra',
+49 silly mapToRegistry   name: 'fs-extra',
+49 silly mapToRegistry   rawSpec: '',
+49 silly mapToRegistry   spec: 'latest',
+49 silly mapToRegistry   type: 'tag' }
+50 silly mapToRegistry uri https://registry.npmjs.org/fs-extra
+51 verbose addNameTag registry:https://registry.npmjs.org/fs-extra not in flight; fetching
+52 verbose get https://registry.npmjs.org/fs-extra not expired, no request
+53 silly addNameTag next cb for fs-extra with tag latest
+54 silly addNamed fs-extra@1.0.0
+55 verbose addNamed "1.0.0" is a plain semver version for fs-extra
+56 silly mapToRegistry name fs-extra
+57 silly mapToRegistry using default registry
+58 silly mapToRegistry registry https://registry.npmjs.org/
+59 silly mapToRegistry data Result {
+59 silly mapToRegistry   raw: 'fs-extra',
+59 silly mapToRegistry   scope: null,
+59 silly mapToRegistry   escapedName: 'fs-extra',
+59 silly mapToRegistry   name: 'fs-extra',
+59 silly mapToRegistry   rawSpec: '',
+59 silly mapToRegistry   spec: 'latest',
+59 silly mapToRegistry   type: 'tag' }
+60 silly mapToRegistry uri https://registry.npmjs.org/fs-extra
+61 verbose addRemoteTarball https://registry.npmjs.org/fs-extra/-/fs-extra-1.0.0.tgz not in flight; adding
+62 verbose addRemoteTarball [ 'https://registry.npmjs.org/fs-extra/-/fs-extra-1.0.0.tgz',
+62 verbose addRemoteTarball   'cd3ce5f7e7cb6145883fcae3191e9877f8587950' ]
+63 info retry fetch attempt 1 at 12:36:15 AM
+64 info attempt registry request try #1 at 12:36:15 AM
+65 http fetch GET https://registry.npmjs.org/fs-extra/-/fs-extra-1.0.0.tgz
+66 verbose request using bearer token for auth
+67 http fetch 200 https://registry.npmjs.org/fs-extra/-/fs-extra-1.0.0.tgz
+68 silly fetchAndShaCheck shasum cd3ce5f7e7cb6145883fcae3191e9877f8587950
+69 verbose addTmpTarball /tmp/npm-12202-ab9a1bc1/registry.npmjs.org/fs-extra/-/fs-extra-1.0.0.tgz not in flight; adding
+70 verbose addTmpTarball already have metadata; skipping unpack for fs-extra@1.0.0
+71 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+72 silly cache afterAdd fs-extra@1.0.0
+73 verbose afterAdd /home/brad/.npm/fs-extra/1.0.0/package/package.json not in flight; writing
+74 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+75 verbose afterAdd /home/brad/.npm/fs-extra/1.0.0/package/package.json written
+76 silly fetchNamedPackageData graceful-fs
+77 silly mapToRegistry name graceful-fs
+78 silly mapToRegistry using default registry
+79 silly mapToRegistry registry https://registry.npmjs.org/
+80 silly mapToRegistry data Result {
+80 silly mapToRegistry   raw: 'graceful-fs',
+80 silly mapToRegistry   scope: null,
+80 silly mapToRegistry   escapedName: 'graceful-fs',
+80 silly mapToRegistry   name: 'graceful-fs',
+80 silly mapToRegistry   rawSpec: '',
+80 silly mapToRegistry   spec: 'latest',
+80 silly mapToRegistry   type: 'tag' }
+81 silly mapToRegistry uri https://registry.npmjs.org/graceful-fs
+82 silly fetchNamedPackageData jsonfile
+83 silly mapToRegistry name jsonfile
+84 silly mapToRegistry using default registry
+85 silly mapToRegistry registry https://registry.npmjs.org/
+86 silly mapToRegistry data Result {
+86 silly mapToRegistry   raw: 'jsonfile',
+86 silly mapToRegistry   scope: null,
+86 silly mapToRegistry   escapedName: 'jsonfile',
+86 silly mapToRegistry   name: 'jsonfile',
+86 silly mapToRegistry   rawSpec: '',
+86 silly mapToRegistry   spec: 'latest',
+86 silly mapToRegistry   type: 'tag' }
+87 silly mapToRegistry uri https://registry.npmjs.org/jsonfile
+88 silly fetchNamedPackageData klaw
+89 silly mapToRegistry name klaw
+90 silly mapToRegistry using default registry
+91 silly mapToRegistry registry https://registry.npmjs.org/
+92 silly mapToRegistry data Result {
+92 silly mapToRegistry   raw: 'klaw',
+92 silly mapToRegistry   scope: null,
+92 silly mapToRegistry   escapedName: 'klaw',
+92 silly mapToRegistry   name: 'klaw',
+92 silly mapToRegistry   rawSpec: '',
+92 silly mapToRegistry   spec: 'latest',
+92 silly mapToRegistry   type: 'tag' }
+93 silly mapToRegistry uri https://registry.npmjs.org/klaw
+94 verbose request uri https://registry.npmjs.org/jsonfile
+95 verbose request no auth needed
+96 info attempt registry request try #1 at 12:36:15 AM
+97 verbose request using bearer token for auth
+98 verbose etag W/"58680bf2-6359"
+99 verbose lastModified Sat, 31 Dec 2016 19:50:10 GMT
+100 http request GET https://registry.npmjs.org/jsonfile
+101 verbose request uri https://registry.npmjs.org/graceful-fs
+102 verbose request no auth needed
+103 info attempt registry request try #1 at 12:36:15 AM
+104 verbose request using bearer token for auth
+105 verbose etag W/"5865d5c9-10041"
+106 verbose lastModified Fri, 30 Dec 2016 03:34:33 GMT
+107 http request GET https://registry.npmjs.org/graceful-fs
+108 verbose request uri https://registry.npmjs.org/klaw
+109 verbose request no auth needed
+110 info attempt registry request try #1 at 12:36:15 AM
+111 verbose request using bearer token for auth
+112 verbose etag W/"5836b447-4ad9"
+113 verbose lastModified Thu, 24 Nov 2016 09:35:03 GMT
+114 http request GET https://registry.npmjs.org/klaw
+115 http 304 https://registry.npmjs.org/jsonfile
+116 verbose headers { server: 'nginx/1.10.1',
+116 verbose headers   'last-modified': 'Sat, 31 Dec 2016 19:50:10 GMT',
+116 verbose headers   etag: '"58680bf2-6359"',
+116 verbose headers   'cache-control': 'max-age=300',
+116 verbose headers   'accept-ranges': 'bytes',
+116 verbose headers   date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+116 verbose headers   via: '1.1 varnish',
+116 verbose headers   connection: 'keep-alive',
+116 verbose headers   'x-served-by': 'cache-sea1921-SEA',
+116 verbose headers   'x-cache': 'MISS',
+116 verbose headers   'x-cache-hits': '0',
+116 verbose headers   'x-timer': 'S1483864575.493774,VS0,VE8',
+116 verbose headers   vary: 'Accept-Encoding' }
+117 silly get cb [ 304,
+117 silly get   { server: 'nginx/1.10.1',
+117 silly get     'last-modified': 'Sat, 31 Dec 2016 19:50:10 GMT',
+117 silly get     etag: '"58680bf2-6359"',
+117 silly get     'cache-control': 'max-age=300',
+117 silly get     'accept-ranges': 'bytes',
+117 silly get     date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+117 silly get     via: '1.1 varnish',
+117 silly get     connection: 'keep-alive',
+117 silly get     'x-served-by': 'cache-sea1921-SEA',
+117 silly get     'x-cache': 'MISS',
+117 silly get     'x-cache-hits': '0',
+117 silly get     'x-timer': 'S1483864575.493774,VS0,VE8',
+117 silly get     vary: 'Accept-Encoding' } ]
+118 verbose etag https://registry.npmjs.org/jsonfile from cache
+119 verbose get saving jsonfile to /home/brad/.npm/registry.npmjs.org/jsonfile/.cache.json
+120 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+121 silly resolveWithNewModule jsonfile@2.4.0 checking installable status
+122 silly cache add args [ 'jsonfile@^2.1.0', null ]
+123 verbose cache add spec jsonfile@^2.1.0
+124 silly cache add parsed spec Result {
+124 silly cache add   raw: 'jsonfile@^2.1.0',
+124 silly cache add   scope: null,
+124 silly cache add   escapedName: 'jsonfile',
+124 silly cache add   name: 'jsonfile',
+124 silly cache add   rawSpec: '^2.1.0',
+124 silly cache add   spec: '>=2.1.0 <3.0.0',
+124 silly cache add   type: 'range' }
+125 silly addNamed jsonfile@>=2.1.0 <3.0.0
+126 verbose addNamed ">=2.1.0 <3.0.0" is a valid semver range for jsonfile
+127 silly addNameRange { name: 'jsonfile', range: '>=2.1.0 <3.0.0', hasData: false }
+128 silly mapToRegistry name jsonfile
+129 silly mapToRegistry using default registry
+130 silly mapToRegistry registry https://registry.npmjs.org/
+131 silly mapToRegistry data Result {
+131 silly mapToRegistry   raw: 'jsonfile',
+131 silly mapToRegistry   scope: null,
+131 silly mapToRegistry   escapedName: 'jsonfile',
+131 silly mapToRegistry   name: 'jsonfile',
+131 silly mapToRegistry   rawSpec: '',
+131 silly mapToRegistry   spec: 'latest',
+131 silly mapToRegistry   type: 'tag' }
+132 silly mapToRegistry uri https://registry.npmjs.org/jsonfile
+133 verbose addNameRange registry:https://registry.npmjs.org/jsonfile not in flight; fetching
+134 verbose get https://registry.npmjs.org/jsonfile not expired, no request
+135 silly addNameRange number 2 { name: 'jsonfile', range: '>=2.1.0 <3.0.0', hasData: true }
+136 silly addNameRange versions [ 'jsonfile',
+136 silly addNameRange   [ '0.0.1',
+136 silly addNameRange     '1.0.0',
+136 silly addNameRange     '1.0.1',
+136 silly addNameRange     '1.1.0',
+136 silly addNameRange     '1.1.1',
+136 silly addNameRange     '1.2.0',
+136 silly addNameRange     '2.0.0',
+136 silly addNameRange     '2.0.1',
+136 silly addNameRange     '2.1.0',
+136 silly addNameRange     '2.1.1',
+136 silly addNameRange     '2.1.2',
+136 silly addNameRange     '2.2.0',
+136 silly addNameRange     '2.2.1',
+136 silly addNameRange     '2.2.2',
+136 silly addNameRange     '2.2.3',
+136 silly addNameRange     '2.3.0',
+136 silly addNameRange     '2.3.1',
+136 silly addNameRange     '2.4.0' ] ]
+137 silly addNamed jsonfile@2.4.0
+138 verbose addNamed "2.4.0" is a plain semver version for jsonfile
+139 silly cache afterAdd jsonfile@2.4.0
+140 verbose afterAdd /home/brad/.npm/jsonfile/2.4.0/package/package.json not in flight; writing
+141 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+142 verbose afterAdd /home/brad/.npm/jsonfile/2.4.0/package/package.json written
+143 http 304 https://registry.npmjs.org/klaw
+144 verbose headers { server: 'nginx/1.10.1',
+144 verbose headers   'last-modified': 'Thu, 24 Nov 2016 09:35:03 GMT',
+144 verbose headers   etag: '"5836b447-4ad9"',
+144 verbose headers   'cache-control': 'max-age=300',
+144 verbose headers   'accept-ranges': 'bytes',
+144 verbose headers   date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+144 verbose headers   via: '1.1 varnish',
+144 verbose headers   connection: 'keep-alive',
+144 verbose headers   'x-served-by': 'cache-sea1921-SEA',
+144 verbose headers   'x-cache': 'MISS',
+144 verbose headers   'x-cache-hits': '0',
+144 verbose headers   'x-timer': 'S1483864575.518951,VS0,VE8',
+144 verbose headers   vary: 'Accept-Encoding' }
+145 silly get cb [ 304,
+145 silly get   { server: 'nginx/1.10.1',
+145 silly get     'last-modified': 'Thu, 24 Nov 2016 09:35:03 GMT',
+145 silly get     etag: '"5836b447-4ad9"',
+145 silly get     'cache-control': 'max-age=300',
+145 silly get     'accept-ranges': 'bytes',
+145 silly get     date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+145 silly get     via: '1.1 varnish',
+145 silly get     connection: 'keep-alive',
+145 silly get     'x-served-by': 'cache-sea1921-SEA',
+145 silly get     'x-cache': 'MISS',
+145 silly get     'x-cache-hits': '0',
+145 silly get     'x-timer': 'S1483864575.518951,VS0,VE8',
+145 silly get     vary: 'Accept-Encoding' } ]
+146 verbose etag https://registry.npmjs.org/klaw from cache
+147 verbose get saving klaw to /home/brad/.npm/registry.npmjs.org/klaw/.cache.json
+148 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+149 silly resolveWithNewModule klaw@1.3.1 checking installable status
+150 silly cache add args [ 'klaw@^1.0.0', null ]
+151 verbose cache add spec klaw@^1.0.0
+152 silly cache add parsed spec Result {
+152 silly cache add   raw: 'klaw@^1.0.0',
+152 silly cache add   scope: null,
+152 silly cache add   escapedName: 'klaw',
+152 silly cache add   name: 'klaw',
+152 silly cache add   rawSpec: '^1.0.0',
+152 silly cache add   spec: '>=1.0.0 <2.0.0',
+152 silly cache add   type: 'range' }
+153 silly addNamed klaw@>=1.0.0 <2.0.0
+154 verbose addNamed ">=1.0.0 <2.0.0" is a valid semver range for klaw
+155 silly addNameRange { name: 'klaw', range: '>=1.0.0 <2.0.0', hasData: false }
+156 silly mapToRegistry name klaw
+157 silly mapToRegistry using default registry
+158 silly mapToRegistry registry https://registry.npmjs.org/
+159 silly mapToRegistry data Result {
+159 silly mapToRegistry   raw: 'klaw',
+159 silly mapToRegistry   scope: null,
+159 silly mapToRegistry   escapedName: 'klaw',
+159 silly mapToRegistry   name: 'klaw',
+159 silly mapToRegistry   rawSpec: '',
+159 silly mapToRegistry   spec: 'latest',
+159 silly mapToRegistry   type: 'tag' }
+160 silly mapToRegistry uri https://registry.npmjs.org/klaw
+161 verbose addNameRange registry:https://registry.npmjs.org/klaw not in flight; fetching
+162 verbose get https://registry.npmjs.org/klaw not expired, no request
+163 silly addNameRange number 2 { name: 'klaw', range: '>=1.0.0 <2.0.0', hasData: true }
+164 silly addNameRange versions [ 'klaw',
+164 silly addNameRange   [ '0.1.0',
+164 silly addNameRange     '1.0.0',
+164 silly addNameRange     '1.1.0',
+164 silly addNameRange     '1.1.1',
+164 silly addNameRange     '1.1.2',
+164 silly addNameRange     '1.1.3',
+164 silly addNameRange     '1.2.0',
+164 silly addNameRange     '1.3.0',
+164 silly addNameRange     '1.3.1' ] ]
+165 silly addNamed klaw@1.3.1
+166 verbose addNamed "1.3.1" is a plain semver version for klaw
+167 silly cache afterAdd klaw@1.3.1
+168 verbose afterAdd /home/brad/.npm/klaw/1.3.1/package/package.json not in flight; writing
+169 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+170 verbose afterAdd /home/brad/.npm/klaw/1.3.1/package/package.json written
+171 http 200 https://registry.npmjs.org/graceful-fs
+172 verbose headers { server: 'nginx/1.10.1',
+172 verbose headers   'content-type': 'application/json',
+172 verbose headers   'last-modified': 'Wed, 04 Jan 2017 15:06:06 GMT',
+172 verbose headers   etag: 'W/"586d0f5e-10050"',
+172 verbose headers   'content-encoding': 'gzip',
+172 verbose headers   'cache-control': 'max-age=300',
+172 verbose headers   'transfer-encoding': 'chunked',
+172 verbose headers   'accept-ranges': 'bytes',
+172 verbose headers   date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+172 verbose headers   via: '1.1 varnish',
+172 verbose headers   connection: 'keep-alive',
+172 verbose headers   'x-served-by': 'cache-sea1927-SEA',
+172 verbose headers   'x-cache': 'MISS',
+172 verbose headers   'x-cache-hits': '0',
+172 verbose headers   'x-timer': 'S1483864575.519866,VS0,VE69',
+172 verbose headers   vary: 'Accept-Encoding' }
+173 silly get cb [ 200,
+173 silly get   { server: 'nginx/1.10.1',
+173 silly get     'content-type': 'application/json',
+173 silly get     'last-modified': 'Wed, 04 Jan 2017 15:06:06 GMT',
+173 silly get     etag: 'W/"586d0f5e-10050"',
+173 silly get     'content-encoding': 'gzip',
+173 silly get     'cache-control': 'max-age=300',
+173 silly get     'transfer-encoding': 'chunked',
+173 silly get     'accept-ranges': 'bytes',
+173 silly get     date: 'Sun, 08 Jan 2017 08:36:15 GMT',
+173 silly get     via: '1.1 varnish',
+173 silly get     connection: 'keep-alive',
+173 silly get     'x-served-by': 'cache-sea1927-SEA',
+173 silly get     'x-cache': 'MISS',
+173 silly get     'x-cache-hits': '0',
+173 silly get     'x-timer': 'S1483864575.519866,VS0,VE69',
+173 silly get     vary: 'Accept-Encoding' } ]
+174 verbose get saving graceful-fs to /home/brad/.npm/registry.npmjs.org/graceful-fs/.cache.json
+175 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+176 silly resolveWithNewModule graceful-fs@4.1.11 checking installable status
+177 silly cache add args [ 'graceful-fs@^4.1.2', null ]
+178 verbose cache add spec graceful-fs@^4.1.2
+179 silly cache add parsed spec Result {
+179 silly cache add   raw: 'graceful-fs@^4.1.2',
+179 silly cache add   scope: null,
+179 silly cache add   escapedName: 'graceful-fs',
+179 silly cache add   name: 'graceful-fs',
+179 silly cache add   rawSpec: '^4.1.2',
+179 silly cache add   spec: '>=4.1.2 <5.0.0',
+179 silly cache add   type: 'range' }
+180 silly addNamed graceful-fs@>=4.1.2 <5.0.0
+181 verbose addNamed ">=4.1.2 <5.0.0" is a valid semver range for graceful-fs
+182 silly addNameRange { name: 'graceful-fs', range: '>=4.1.2 <5.0.0', hasData: false }
+183 silly mapToRegistry name graceful-fs
+184 silly mapToRegistry using default registry
+185 silly mapToRegistry registry https://registry.npmjs.org/
+186 silly mapToRegistry data Result {
+186 silly mapToRegistry   raw: 'graceful-fs',
+186 silly mapToRegistry   scope: null,
+186 silly mapToRegistry   escapedName: 'graceful-fs',
+186 silly mapToRegistry   name: 'graceful-fs',
+186 silly mapToRegistry   rawSpec: '',
+186 silly mapToRegistry   spec: 'latest',
+186 silly mapToRegistry   type: 'tag' }
+187 silly mapToRegistry uri https://registry.npmjs.org/graceful-fs
+188 verbose addNameRange registry:https://registry.npmjs.org/graceful-fs not in flight; fetching
+189 verbose get https://registry.npmjs.org/graceful-fs not expired, no request
+190 silly addNameRange number 2 { name: 'graceful-fs', range: '>=4.1.2 <5.0.0', hasData: true }
+191 silly addNameRange versions [ 'graceful-fs',
+191 silly addNameRange   [ '1.0.0',
+191 silly addNameRange     '1.0.1',
+191 silly addNameRange     '1.0.2',
+191 silly addNameRange     '1.1.0',
+191 silly addNameRange     '1.1.1',
+191 silly addNameRange     '1.1.2',
+191 silly addNameRange     '1.1.3',
+191 silly addNameRange     '1.1.4',
+191 silly addNameRange     '1.1.5',
+191 silly addNameRange     '1.1.6',
+191 silly addNameRange     '1.1.7',
+191 silly addNameRange     '1.1.8',
+191 silly addNameRange     '1.1.9',
+191 silly addNameRange     '1.1.10',
+191 silly addNameRange     '1.1.11',
+191 silly addNameRange     '1.1.12',
+191 silly addNameRange     '1.1.13',
+191 silly addNameRange     '1.1.14',
+191 silly addNameRange     '1.2.0',
+191 silly addNameRange     '1.2.1',
+191 silly addNameRange     '1.2.2',
+191 silly addNameRange     '1.2.3',
+191 silly addNameRange     '2.0.0',
+191 silly addNameRange     '2.0.1',
+191 silly addNameRange     '2.0.2',
+191 silly addNameRange     '2.0.3',
+191 silly addNameRange     '3.0.0',
+191 silly addNameRange     '3.0.1',
+191 silly addNameRange     '3.0.2',
+191 silly addNameRange     '3.0.3',
+191 silly addNameRange     '3.0.4',
+191 silly addNameRange     '3.0.5',
+191 silly addNameRange     '3.0.6',
+191 silly addNameRange     '3.0.7',
+191 silly addNameRange     '3.0.8',
+191 silly addNameRange     '4.1.0',
+191 silly addNameRange     '4.1.1',
+191 silly addNameRange     '4.1.2',
+191 silly addNameRange     '4.1.3',
+191 silly addNameRange     '4.1.4',
+191 silly addNameRange     '4.1.5',
+191 silly addNameRange     '3.0.9',
+191 silly addNameRange     '4.1.6',
+191 silly addNameRange     '3.0.10',
+191 silly addNameRange     '3.0.11',
+191 silly addNameRange     '4.1.7',
+191 silly addNameRange     '4.1.8',
+191 silly addNameRange     '4.1.9',
+191 silly addNameRange     '4.1.10',
+191 silly addNameRange     '4.1.11' ] ]
+192 silly addNamed graceful-fs@4.1.11
+193 verbose addNamed "4.1.11" is a plain semver version for graceful-fs
+194 silly cache afterAdd graceful-fs@4.1.11
+195 verbose afterAdd /home/brad/.npm/graceful-fs/4.1.11/package/package.json not in flight; writing
+196 verbose correctMkdir /home/brad/.npm correctMkdir not in flight; initializing
+197 verbose afterAdd /home/brad/.npm/graceful-fs/4.1.11/package/package.json written
+198 silly loadAllDepsIntoIdealTree Finishing
+199 silly loadIdealTree Finishing
+200 silly currentTree lib
+201 silly idealTree lib
+201 silly idealTree └─┬ fs-extra@1.0.0
+201 silly idealTree   ├── graceful-fs@4.1.11
+201 silly idealTree   ├── jsonfile@2.4.0
+201 silly idealTree   └── klaw@1.3.1
+202 silly generateActionsToTake Starting
+203 silly install generateActionsToTake
+204 warn checkPermissions Missing write access to /usr/local/lib/node_modules
+205 silly rollbackFailedOptional Starting
+206 silly rollbackFailedOptional Finishing
+207 silly runTopLevelLifecycles Finishing
+208 silly install printInstalled
+209 verbose stack Error: EACCES: permission denied, access '/usr/local/lib/node_modules'
+210 verbose cwd /home/brad/automate/when-do
+211 error Linux 4.4.0-57-generic
+212 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "fs-extra"
+213 error node v7.2.1
+214 error npm  v3.10.10
+215 error path /usr/local/lib/node_modules
+216 error code EACCES
+217 error errno -13
+218 error syscall access
+219 error Error: EACCES: permission denied, access '/usr/local/lib/node_modules'
+219 error  { Error: EACCES: permission denied, access '/usr/local/lib/node_modules'
+219 error   errno: -13,
+219 error   code: 'EACCES',
+219 error   syscall: 'access',
+219 error   path: '/usr/local/lib/node_modules' }
+220 error Please try running this command again as root/Administrator.
+221 verbose exit [ -13, true ]
