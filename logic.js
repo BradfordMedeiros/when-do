@@ -84,6 +84,30 @@ logic.expectWithin = function (first_condition, second_condition, timeout, callb
 	})
 }
 
+logic.transition = function(first_condition, second_condition, callback){
+
+	let last_first_is_true = false;
+	const innerHandle = logic.when({}, () => {
+		const first  = first_condition();
+    if (first){
+    	last_first_is_true = true;
+    	return false
+		}else{
+    	if (last_first_is_true){
+        const sec = second_condition();
+				if (sec){
+					last_first_is_true = first;
+					return true;
+				}
+      }else{
+    		last_first_is_true  = first;
+    		return false;
+			}
+		}
+
+	}).do(callback);
+}
+
 
 
 function start_condition(condition){
