@@ -11,7 +11,7 @@ var logic = {
 		}
 		this.type = "when";
 		return new execute(data,evaluator);
-	}
+	},
 };
 
 function execute(data, evaluator){
@@ -54,6 +54,37 @@ execute.prototype.do = function(action,options){
 	logic.conditions.push(condition);
 	return new handle(logic, condition.handle_id);
 };
+execute.prototype.do_once = function(action, options){
+	if (options && options.action_limit !== undefined && options.action_limit !== 1){
+    throw (new Error("action limit was specified in options and as a value other than 1 "));
+	}
+
+	const enhancedOptions = {
+		eval_limit: options ? options.eval_limit : undefined,
+		action_limit: 1,
+		rate: options ? options.rate : undefined,
+	}
+	return this.do(action, enhancedOptions);
+};
+
+// expect to evaluate to true and if not signal an alarm
+logic.expectWithin = function (first_condition, second_condition, timeout, callback, goodcallback) {
+	logic.when({}, first_condition).do_once(() =>{
+		let timeElapsed = false;
+    setTimeout(() => timeElapsed = true, timeout);
+    const innerHandle = logic.when({ }, () => {
+    	if (timeElapsed === true){
+    		innerHandle.stop();
+    		callback();
+			}else{
+    		const value = second_condition();
+				return value;
+			}
+		}).do_once(goodcallback);
+	})
+}
+
+
 
 function start_condition(condition){
 	
