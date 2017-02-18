@@ -1,6 +1,6 @@
 
 var assert = require("assert");
-var logic = require("../logic.js");
+var logic = require("../util/logic.js");
 
 describe("logic - basic evaluation tests", function(){
     

@@ -2,7 +2,7 @@
 const child_process = require("child_process");
 const path = require("path");
 const fse = require("fs-extra");
-const logic = require("../logic.js");
+const logic = require("../util/logic.js");
 
 var condition = function(states,actions, path){
 

@@ -2,7 +2,7 @@
 
 // requires --harmony flag
 
-var logic = require("../logic.js");
+var logic = require("../util/logic.js");
 
 // example creating monitor on data.count.  monitors at default rates
 // when we get over 50 we print out values and clear all handles
