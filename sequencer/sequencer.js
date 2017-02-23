@@ -33,6 +33,14 @@ sequencer.prototype.wait = function(time){
 	return this;
 };
 
+sequencer.prototype.hold = function(promiseUntilHold) {
+	if (!promiseUntilHold instanceof Promise){
+		throw (new Error("invalid paramters to hold in sequencer"));
+	}
+	this.the_events.push(new event(promiseUntilHold, "hold"));
+	return this;
+};
+
 sequencer.prototype.run = function(){
 	if (this.has_been_run === true){
 		throw (new Error("a sequence can only be ran once"));

@@ -4,8 +4,8 @@ const create_hold_promise = hold_promise => {
     throw (new Error('hold should be instance of promise'));
   }else{
     const the_promise = new Promise((resolve,reject) => {
-      value.then((x)=>resolve(x));
-      value.catch((x)=>reject(x));
+      hold_promise.then((x)=>resolve(x));
+      hold_promise.catch((x)=>reject(x));
     });
     return the_promise;
   }

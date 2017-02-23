@@ -20,9 +20,5 @@
   "bugs": {
     "url": "https://github.com/BradfordMedeiros/when-do/issues"
   },
-  "homepage": "https://github.com/BradfordMedeiros/when-do#readme",
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "homepage": "https://github.com/BradfordMedeiros/when-do#readme"
 }
