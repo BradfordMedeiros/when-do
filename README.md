@@ -1,5 +1,5 @@
 # when-do
-Utility classes originally created for smart-home automation that allow for a more declarative approach to code execution.
+Utility classes that allow for a more declarative approach to tasks commonly needed in home automation.
 
 ---
 
