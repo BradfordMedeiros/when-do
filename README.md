@@ -1,5 +1,3 @@
 # when-do
-Utility classes to allow for an expanded set of logical operations.  Toolset originally created for use as utility library to smart home automation system.
-
-
+Utility classes originally created for smart-home automation that allow for a more declarative approach to code execution.
 
