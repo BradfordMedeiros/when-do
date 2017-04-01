@@ -6,7 +6,7 @@ Utility classes originally created for smart-home automation that allow for a mo
 To install:
 `npm install when_do`
 
-[Documentation available here](https://www.google.com)
+[Documentation available here](http://bradfordmedeiros.github.io/when-do/)
 
 
 
