@@ -1,4 +1,3 @@
-
 const event = require('./attach_promise').event;
 const attach_promise = require('./attach_promise').attach_promise;
 
