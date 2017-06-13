@@ -33,10 +33,13 @@ sequencer.prototype.wait = function(time){
 };
 
 sequencer.prototype.hold = function(promiseUntilHold) {
-	if (!promiseUntilHold instanceof Promise){
-		throw (new Error("invalid paramters to hold in sequencer"));
-	}
-	this.the_events.push(new event(promiseUntilHold, "hold"));
+	if (promiseUntilHold instanceof Promise){
+    this.the_events.push(new event(promiseUntilHold, "hold"));
+	}else if (typeof(promiseUntilHold) === 'function'){
+		this.the_events.push(new event(promiseUntilHold,  "holdEval"));
+	}else{
+    throw (new Error("invalid paramters to hold in sequencer"));
+  }
 	return this;
 };
 

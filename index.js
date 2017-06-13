@@ -1,5 +1,5 @@
 const sequencer = require("./sequencer/sequencer.js");
-const rules = require("./rules/rules.js");
+const rules = require("./logic/when.js");
 
 module.exports = {
   sequencer,

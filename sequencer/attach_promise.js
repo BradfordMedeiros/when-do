@@ -1,6 +1,7 @@
 const create_time_promise = require('./actions/time_promise');
 const create_action_promise =  require('./actions/action_promise');
 const create_hold_prommise = require('./actions/hold_promise');
+const create_hold_eval_promise = require('./actions/hold_eval_promise');
 
 const event = function(value, type){
   this.value = value;
@@ -11,6 +12,7 @@ const creation_map = {
   then: create_action_promise,
   wait: create_time_promise,
   hold: create_hold_prommise,
+  holdEval: create_hold_eval_promise,
 };
 
 const create_promise = (event) => {
