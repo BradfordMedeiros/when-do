@@ -5,25 +5,25 @@ const transitionToFalse  = require('./rules/transitionToFalse');
 const getEval = require('./getEval');
 
 const when = {
-  each: (evaluator, data, actionOnTrue, rate) => {
+  each: (evaluator, data, rate) => {
     return ({
-      do: (actionOnTrue, rate) => {
+      do: (actionOnTrue) => {
         const when = getEval(each, evaluator, data, actionOnTrue, rate);
         return when;
       }
     })
   },
-  transitionToTrue: (evaluator, data, actionOnTrue, rate) => {
+  transitionToTrue: (evaluator, data, rate) => {
     return ({
-      do: (actionOnTrue, rate) => {
+      do: (actionOnTrue) => {
         const when = getEval(transitionToTrue, evaluator, data, actionOnTrue, rate);
         return when;
       }
     });
   },
-  transitionToFalse: (evaluator, data, actionOnTrue, rate) => {
+  transitionToFalse: (evaluator, data, rate) => {
     return ({
-      do: (actionOnTrue, rate) => {
+      do: (actionOnTrue) => {
         const when = getEval(transitionToFalse, evaluator, data, actionOnTrue, rate);
         return when;
       }
