@@ -4,6 +4,8 @@ tests/
 docs/
 .idea
 README.md
-
+sequencer/README.md
+logic/README.md
+flows/README.md
 
 
